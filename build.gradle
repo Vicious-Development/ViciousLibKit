@@ -55,8 +55,8 @@ publishing {
     }
     publications {
         gpr(MavenPublication) {
-            groupId = "com.${group}"
-            artifactId = 'viciouslib'
+            groupId = "${group}"
+            artifactId = 'viciouslibkit'
             version = "${version}"
             from components.java
         }
