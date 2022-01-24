@@ -8,6 +8,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.*;
 import org.bukkit.block.data.type.Slab;
 
+import java.util.Map;
+
 public class BlockInstance {
     public static final BlockInstance ENDSTONE = new BlockInstance(Material.END_STONE);
     public static final BlockInstance ENDSTONEBRICK = new BlockInstance(Material.END_STONE_BRICKS);
@@ -77,8 +79,13 @@ public class BlockInstance {
         }
         return true;
     }
-    public BlockInstance rotateLeft(){
-        return new BlockInstance(material).facing(FacingUtil.getPerpendicularLeft(facing));
+    public BlockInstance rotateCounterClockwise(){
+        if(facing == null) return this;
+        return new BlockInstance(material).facing(FacingUtil.getCounterClockWise90(facing));
+    }
+    public BlockInstance rotateClockwise(){
+        if(facing == null) return this;
+        return new BlockInstance(material).facing(FacingUtil.getClockwise90(facing));
     }
 
     public BlockInstance orientation(Axis axis) {

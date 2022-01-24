@@ -1,5 +1,7 @@
 package com.vicious.viciouslibkit.block;
 
+import org.bukkit.block.BlockFace;
+
 import java.util.ArrayList;
 
 public class BlockTemplate {
@@ -10,6 +12,9 @@ public class BlockTemplate {
     private int x = 0;
     private int y = 0;
     private int z = 0;
+    public int startX = 0;
+    public int startY = 0;
+    public int startZ = 0;
     public BlockTemplate(){}
     /**
      * Inserts the block instance in the x loc
@@ -78,5 +83,56 @@ public class BlockTemplate {
         if(instanceList.get(y).get(z) == null) return null;
         if(instanceList.get(y).get(z).size() <= x) return null;
         return instanceList.get(y).get(z).get(x);
+    }
+    public BlockTemplate rotateCounterClockwise90(){
+        BlockTemplate template = BlockTemplate.start();
+        for (int i = 0; i < maxY && i < instanceList.size(); i++) {
+            ArrayList<ArrayList<BlockInstance>> zlist = instanceList.get(i);
+            for(int x = 0; x < maxX; x++){
+                for (ArrayList<BlockInstance> xlist : zlist) {
+                    if (x >= xlist.size()) template.any(1);
+                    else template.x(xlist.get(x).rotateCounterClockwise());
+                }
+                template.z();
+            }
+            template.y();
+        }
+        return template;
+    }
+    public BlockTemplate rotateClockwise90(){
+        BlockTemplate template = BlockTemplate.start();
+        for (int i = 0; i < maxY && i < instanceList.size(); i++) {
+            ArrayList<ArrayList<BlockInstance>> zlist = instanceList.get(i);
+            for(int x = maxX; x >= 0; x--){
+                for (ArrayList<BlockInstance> xlist : zlist) {
+                    if (x >= xlist.size()) template.any(1);
+                    else template.x(xlist.get(x).rotateClockwise());
+                }
+                template.z();
+            }
+            template.y();
+        }
+        return template;
+    }
+    //TODO: optimize.
+    public BlockTemplate rotate180(){
+        return rotateClockwise90().rotateClockwise90();
+    }
+    public BlockTemplate rotate(BlockFace dir) {
+        if (dir == BlockFace.NORTH) {
+            return this;
+        } else if (dir == BlockFace.WEST) {
+            return rotateCounterClockwise90();
+        } else if (dir == BlockFace.EAST) {
+            return rotateClockwise90();
+        } else {
+            return rotate180();
+        }
+    }
+    public BlockTemplate finish(int x, int y, int z){
+        this.startX=x;
+        this.startY=y;
+        this.startZ=z;
+        return this;
     }
 }
