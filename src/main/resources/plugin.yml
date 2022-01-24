@@ -1,0 +1,6 @@
+name: Viciouslibkit
+version: @version@
+main: com.vicious.viciouslibkit.Viciouslibkit
+api-version: 1.18
+authors: [ Drathonix ]
+description: An Implementation of ViciousLib in bukkit plugin form with some extra utility code for developers.

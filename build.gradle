@@ -1,0 +1,64 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.1.0'
+    id "maven-publish"
+}
+
+group = 'com.vicious'
+version = '1.0.0'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+    maven {
+        url = uri("https://maven.pkg.github.com/Vicious-MCModding/ViciousLib")
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("GPR_USER")
+            password = project.findProperty("gpr.key") ?: System.getenv("GPR_API_KEY")
+        }
+    }
+}
+
+dependencies {
+    compile "com.vicious:viciouslib:1.6.8";
+    compile "org.json:json:20211205"
+    compileOnly 'org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT'
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        filter ReplaceTokens, tokens: [version: version]
+    }
+}
+publishing {
+    repositories {
+        maven {
+            name = "ViciousLibKit"
+            url = uri("https://maven.pkg.github.com/Vicious-MCModding/ViciousLibKit")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GPR_USER")
+                password = project.findProperty("gpr.key") ?: System.getenv("GPR_API_KEY")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            groupId = "com.${group}"
+            artifactId = 'viciouslib'
+            version = "${version}"
+            from components.java
+        }
+    }
+}
