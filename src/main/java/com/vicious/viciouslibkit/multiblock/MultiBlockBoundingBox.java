@@ -38,4 +38,7 @@ public class MultiBlockBoundingBox {
         Location l = b.getLocation();
         return template.get(l.getBlockX()-x1, l.getBlockY()-y1, l.getBlockZ()-z1).matches(b);
     }
+    public String toString(){
+        return "MBI(" + x1 + "," + y1 + "," + z1 + ")-(" + x2 + "," + y2 + "," + z2 + ")";
+    }
 }

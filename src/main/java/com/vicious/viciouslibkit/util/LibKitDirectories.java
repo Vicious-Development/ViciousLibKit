@@ -1,7 +1,7 @@
 package com.vicious.viciouslibkit.util;
 
 import com.vicious.viciouslib.util.FileUtil;
-import com.vicious.viciouslibkit.Viciouslibkit;
+import com.vicious.viciouslibkit.ViciousLibKit;
 import org.bukkit.Bukkit;
 
 import java.io.FileReader;
@@ -25,7 +25,7 @@ public class LibKitDirectories {
         try {
             serverProperties.load(new FileReader(rootDir() + "/server.properties"));
         } catch (IOException e) {
-            Viciouslibkit.logger().severe("Tried to read from server.properties, but the properties file did not exist???" +
+            ViciousLibKit.logger().severe("Tried to read from server.properties, but the properties file did not exist???" +
                     "\nIf you have some sort of cursed minecraft server without server.properties, please create the file and set 'level-name' to your world name.");
             e.printStackTrace();
             System.exit(-1);

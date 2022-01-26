@@ -33,7 +33,6 @@ public class LocationItemMap extends HashMap<WorldCraftingLocation,ItemStackMap>
 
     private boolean verifyExistence(WorldCraftingLocation l) {
         if(containsKey(l)) {
-            System.out.println("EXISTS: " + l);
             return true;
         }
         put(l,new ItemStackMap());

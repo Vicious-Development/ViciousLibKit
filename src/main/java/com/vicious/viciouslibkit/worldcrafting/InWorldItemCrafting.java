@@ -1,6 +1,6 @@
 package com.vicious.viciouslibkit.worldcrafting;
 
-import com.vicious.viciouslibkit.util.Util;
+import com.vicious.viciouslibkit.util.LibKitUtil;
 import com.vicious.viciouslibkit.util.map.ItemStackMap;
 import com.vicious.viciouslibkit.util.map.LocationItemMap;
 import org.bukkit.Location;
@@ -43,6 +43,6 @@ public class InWorldItemCrafting {
     }
     private static void dropSpawn(ItemStack result, World w, Location l){
         Item item = w.dropItem(l, result);
-        item.setVelocity(Util.zeroVelocity());
+        item.setVelocity(LibKitUtil.zeroVelocity());
     }
 }

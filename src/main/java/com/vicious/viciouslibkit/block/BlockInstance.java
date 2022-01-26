@@ -14,12 +14,12 @@ public class BlockInstance {
     public static final BlockInstance ENDSTONE = new BlockInstance(Material.END_STONE);
     public static final BlockInstance ENDSTONEBRICK = new BlockInstance(Material.END_STONE_BRICKS);
     public static final BlockInstance AIR = new BlockInstance(Material.AIR);
-    private BlockFace facing;
-    private Material material;
-    private Bisected.Half verticalOrientation;
-    private boolean waterLogged;
-    private Axis axis;
-    private Slab.Type slabType;
+    public BlockFace facing;
+    public Material material;
+    public Bisected.Half verticalOrientation;
+    public boolean waterLogged;
+    public Axis axis;
+    public Slab.Type slabType;
 
     public BlockInstance(Material material){
         this.material=material;

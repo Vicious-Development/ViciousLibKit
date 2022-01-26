@@ -1,7 +1,7 @@
 package com.vicious.viciouslibkit.event;
 
 
-import com.vicious.viciouslibkit.Viciouslibkit;
+import com.vicious.viciouslibkit.ViciousLibKit;
 import com.vicious.viciouslibkit.multiblock.MultiBlockHandler;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,7 +13,7 @@ public class ChunkEvents implements Listener {
         try {
             MultiBlockHandler.load(ev.getChunk());
         } catch (ClassNotFoundException ex){
-            Viciouslibkit.logger().warning("Multiblock previously registered no longer exists.");
+            ViciousLibKit.logger().warning("Multiblock previously registered no longer exists.");
         }
     }
 }

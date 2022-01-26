@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @FunctionalInterface
 public interface MBReconstructor<T extends MultiBlockInstance> {
-    T construct(Class<?> mbType, UUID id, ChunkPos pos);
+    T construct(Class<?> mbType, World w, UUID id, ChunkPos pos);
 }
