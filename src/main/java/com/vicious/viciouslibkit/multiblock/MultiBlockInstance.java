@@ -1,29 +1,24 @@
 package com.vicious.viciouslibkit.multiblock;
 
-import com.vicious.viciouslib.LoggerWrapper;
 import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
 import com.vicious.viciouslib.database.tracking.JSONTrackable;
 import com.vicious.viciouslib.database.tracking.values.TrackableEnum;
 import com.vicious.viciouslib.database.tracking.values.TrackableObject;
-import com.vicious.viciouslib.database.tracking.values.TrackableValue;
-import com.vicious.viciouslib.util.FileUtil;
 import com.vicious.viciouslibkit.block.BlockInstance;
 import com.vicious.viciouslibkit.block.BlockTemplate;
 import com.vicious.viciouslibkit.util.ChunkPos;
+import com.vicious.viciouslibkit.util.WorldUtil;
 import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.util.Vector;
-import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public class MultiBlockInstance extends JSONTrackable<MultiBlockInstance> {
     public static Map<Class<?>, BlockTemplate> templates = new HashMap<>();
@@ -111,23 +106,23 @@ public class MultiBlockInstance extends JSONTrackable<MultiBlockInstance> {
      * Checks orientation in every facing orientation : NORTH,SOUTH,EAST,WEST
      * Returns the orientation with the most blocks correct.
      */
-    public static MultiBlockState validate(World w, Location startPos, Class<?> type){
+    public static MultiBlockState checkValid(World w, Location startPos, Class<?> type){
         BlockTemplate blocks = templates.get(type);
         //NORTH ORIENTATION
         BlockFace orientation = BlockFace.NORTH;
-        MultiBlockState state = validate(w,startPos,blocks,orientation);
+        MultiBlockState state = checkValid(w,startPos,blocks,orientation);
         if(state.isValid()) return state;
         //EAST ORIENTATION
         orientation = BlockFace.EAST;
-        state = bestCase(state, validate(w,startPos,blocks,orientation));
+        state = bestCase(state, checkValid(w,startPos,blocks,orientation));
         if(state.isValid()) return state;
         //SOUTH ORIENTATION
         orientation = BlockFace.SOUTH;
-        state = bestCase(state, validate(w,startPos,blocks,orientation));
+        state = bestCase(state, checkValid(w,startPos,blocks,orientation));
         if(state.isValid()) return state;
         //WEST ORIENTATION
         orientation = BlockFace.WEST;
-        state = bestCase(state, validate(w,startPos,blocks,orientation));
+        state = bestCase(state, checkValid(w,startPos,blocks,orientation));
         return state;
     }
 
@@ -137,21 +132,26 @@ public class MultiBlockInstance extends JSONTrackable<MultiBlockInstance> {
      * If false, checks the x flipped version of the template.
      * Returns the state with the most blocks correct.
      */
-    public static MultiBlockState validate(World w, Location startPos, BlockTemplate blocks, BlockFace orientation){
+    public static MultiBlockState checkValid(World w, Location startPos, BlockTemplate blocks, BlockFace orientation){
         blocks = blocks.rotate(orientation);
-        MultiBlockState state = validate(blocks,w,startPos);
-        if(state.facing(orientation).isValid()) return state;
-        else return bestCase(state, validate(blocks.flipX(),w,startPos).flip(true));
+        MultiBlockState state = checkValid(blocks,w,startPos).facing(orientation);
+        if(state.isValid()) return state;
+        else return bestCase(state, checkValid(blocks.flipX(),w,startPos).facing(orientation).flip(true));
     }
     private static MultiBlockState bestCase(MultiBlockState state1, MultiBlockState state2){
         if(state1.count > state2.count) return state1;
         return state2;
     }
-
+    public void validate(){
+        Location loc = new Location(world,xyz.value().x,xyz.value().y,xyz.value().z);
+        forEachSolid(loc, world,(w, l)->{
+            WorldUtil.spawnHoveringParticlesAround(l,w, Particle.FIREWORKS_SPARK,1,0.15,0.15,0.15,0.16,4);
+        });
+    }
     /**
      * Returns the state of the template in the world.
      */
-    private static MultiBlockState validate(BlockTemplate blocks, World w, Location startPos){
+    private static MultiBlockState checkValid(BlockTemplate blocks, World w, Location startPos){
         startPos = startPos.clone().add(blocks.getOriginTranslation());
         long count = 0;
         for (int x = 0; x <= blocks.maxX; x++) {
@@ -180,5 +180,18 @@ public class MultiBlockInstance extends JSONTrackable<MultiBlockInstance> {
                 ", facing=" + facing +
                 ", ID=" + ID +
                 '}';
+    }
+    public void forEachSolid(Location startPos, World w, BiConsumer<World,Location> consumer){
+        startPos = startPos.clone().add(validTemplate.getOriginTranslation());
+        for (int x = 0; x <= validTemplate.maxX; x++) {
+            for (int y = 0; y <= validTemplate.maxY; y++) {
+                for (int z = 0; z <= validTemplate.maxZ; z++) {
+                    Location l = startPos.clone().add(x,y,z);
+                    BlockInstance instance = validTemplate.get(x,y,z);
+                    if(instance == null || instance.isAir()) continue;
+                    consumer.accept(w,l);
+                }
+            }
+        }
     }
 }

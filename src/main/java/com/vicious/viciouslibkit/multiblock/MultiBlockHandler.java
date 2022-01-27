@@ -10,7 +10,6 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.event.block.BlockEvent;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -37,7 +36,7 @@ public class MultiBlockHandler {
     public static <T extends MultiBlockInstance> MultiBlockState create(Class<T> cls, World w, Location l){
         SQLVector3i v = new SQLVector3i(l.getBlockX(), l.getBlockY(), l.getBlockZ());
         if(checkExists(w, v)) return new MultiBlockState(MultiBlockState.State.VALID," Already exists.",0);
-        MultiBlockState isValid = MultiBlockInstance.validate(w,l,cls);
+        MultiBlockState isValid = MultiBlockInstance.checkValid(w,l,cls);
         if(!isValid.isValid()) return isValid;
         addMultiblock(registry.get(cls).construct(cls,w,l,isValid.orientation,isValid.flipped,UUID.randomUUID()));
         return isValid;
@@ -55,7 +54,9 @@ public class MultiBlockHandler {
         MultiBlockWorldData dat = multiblocks.get(w.getUID());
         dat.addMultiBlock(mbi);
         save(mbi);
-        System.out.println(MultiBlockInstance.templates.get(mbi.type).allOrientations());
+        System.out.println("FA: " + mbi.facing.value());
+        System.out.println("FL: " + mbi.flipped.value());
+        System.out.println("T: " + mbi.getTemplate().getOriginTranslation());
     }
     public static void load(Chunk c) throws ClassNotFoundException {
         ChunkPos cpos = new ChunkPos(c.getX(),c.getZ());

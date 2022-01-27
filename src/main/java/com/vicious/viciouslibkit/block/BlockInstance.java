@@ -113,4 +113,8 @@ public class BlockInstance {
         ret += ".";
         return ret;
     }
+
+    public boolean isAir() {
+        return material == Material.AIR;
+    }
 }

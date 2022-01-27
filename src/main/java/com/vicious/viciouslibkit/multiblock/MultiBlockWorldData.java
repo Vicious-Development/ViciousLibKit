@@ -103,6 +103,7 @@ public class MultiBlockWorldData {
     public void addMultiBlock(MultiBlockInstance mbi) {
         multiblocks.put(mbi.xyz.value(), mbi);
         addBoundingBox(mbi);
+        mbi.validate();
     }
 
     public boolean isAreaOccupied(SQLVector3i l) {
