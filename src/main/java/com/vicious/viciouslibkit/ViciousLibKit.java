@@ -9,8 +9,10 @@ import java.util.logging.Logger;
 
 public final class ViciousLibKit extends JavaPlugin {
     private static Logger LOGGER;
+    public static ViciousLibKit INSTANCE;
     @Override
     public void onEnable() {
+        INSTANCE=this;
         LOGGER=getLogger();
         LibKitDirectories.initializePluginDependents();
         getServer().getPluginManager().registerEvents(new ChunkEvents(), this);

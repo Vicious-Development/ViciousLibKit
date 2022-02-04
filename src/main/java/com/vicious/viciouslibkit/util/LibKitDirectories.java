@@ -26,7 +26,7 @@ public class LibKitDirectories {
             serverProperties.load(new FileReader(rootDir() + "/server.properties"));
         } catch (IOException e) {
             ViciousLibKit.logger().severe("Tried to read from server.properties, but the properties file did not exist???" +
-                    "\nIf you have some sort of cursed minecraft server without server.properties, please create the file and set 'level-name' to your world name.");
+                    "\nIf you have some sort of cursed minecraft server without server.properties, please create the file and set 'level-name' to your worldstorage name.");
             e.printStackTrace();
             System.exit(-1);
         }
@@ -38,7 +38,6 @@ public class LibKitDirectories {
         overworldName = serverProperties.getProperty("level-name");
         overworldPath = FileUtil.createDirectoryIfDNE(rootDir() + "/" + overworldName);
         worldPersistentDataDir = FileUtil.createDirectoryIfDNE(overworldPath + "/" + "vicious");
-        multiblockDataDir = FileUtil.createDirectoryIfDNE(worldPersistentDataDir + "/" + "multiblocks");
     }
 
     public static String rootDir() {

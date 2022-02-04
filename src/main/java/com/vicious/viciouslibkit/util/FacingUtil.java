@@ -1,5 +1,6 @@
 package com.vicious.viciouslibkit.util;
 
+import org.bukkit.Axis;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Stairs;
 
@@ -34,5 +35,12 @@ public class FacingUtil {
             return BlockFace.EAST;
         }
         return facing;
+    }
+
+    public static Axis get90Horizontal(Axis axis) {
+        if(axis == null) return axis;
+        if(axis == Axis.Y) return axis;
+        if(axis == Axis.X) return Axis.Y;
+        return Axis.X;
     }
 }

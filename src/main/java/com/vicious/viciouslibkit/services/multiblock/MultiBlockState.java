@@ -1,4 +1,4 @@
-package com.vicious.viciouslibkit.multiblock;
+package com.vicious.viciouslibkit.services.multiblock;
 
 import org.bukkit.block.BlockFace;
 

@@ -1,4 +1,4 @@
-package com.vicious.viciouslibkit.multiblock;
+package com.vicious.viciouslibkit.data.provided.multiblock;
 
 import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
 import com.vicious.viciouslib.database.tracking.JSONTrackable;
@@ -6,6 +6,9 @@ import com.vicious.viciouslib.database.tracking.values.TrackableEnum;
 import com.vicious.viciouslib.database.tracking.values.TrackableObject;
 import com.vicious.viciouslibkit.block.BlockInstance;
 import com.vicious.viciouslibkit.block.BlockTemplate;
+import com.vicious.viciouslibkit.services.multiblock.MultiBlockBoundingBox;
+import com.vicious.viciouslibkit.services.multiblock.MultiBlockService;
+import com.vicious.viciouslibkit.services.multiblock.MultiBlockState;
 import com.vicious.viciouslibkit.util.ChunkPos;
 import com.vicious.viciouslibkit.util.WorldUtil;
 import org.bukkit.Location;
@@ -22,18 +25,18 @@ import java.util.function.BiConsumer;
 
 public class MultiBlockInstance extends JSONTrackable<MultiBlockInstance> {
     public static Map<Class<?>, BlockTemplate> templates = new HashMap<>();
-    public Class<?> type;
+    public Class<? extends MultiBlockInstance> type;
     public World world;
     //Same as a vector3i just with SQL support i guess. We're not using the sql part so whatever.
     public TrackableObject<SQLVector3i> xyz = add(new TrackableObject<>("p",()->new SQLVector3i(0,0,0),this));
     public TrackableEnum<BlockFace> facing = add(new TrackableEnum<>("f",()->BlockFace.NORTH,this));
     public TrackableObject<Boolean> flipped = add(new TrackableObject<>("d",()->false,this));
     public MultiBlockBoundingBox box;
-    private BlockTemplate validTemplate;
+    protected BlockTemplate validTemplate;
     public final UUID ID;
 
-    public MultiBlockInstance(Class<?> mbType, World w, Location l, BlockFace dir, boolean flipped, UUID id) {
-        super(MultiBlockHandler.getChunkDir(w,ChunkPos.fromBlockPos(l)).toAbsolutePath() + "/" + mbType.getCanonicalName() + "_" + id + ".json");
+    public MultiBlockInstance(Class<? extends MultiBlockInstance> mbType, World w, Location l, BlockFace dir, boolean flipped, UUID id) {
+        super(MultiBlockService.getMBPath(w,l,mbType,id));
         type = mbType;
         world = w;
         xyz.setWithoutUpdate(new SQLVector3i(l.getBlockX(), l.getBlockY(), l.getBlockZ()));
@@ -43,8 +46,8 @@ public class MultiBlockInstance extends JSONTrackable<MultiBlockInstance> {
         if(flipped) validTemplate=validTemplate.flipX();
         this.ID =id;
     }
-    public MultiBlockInstance(Class<?> type, World w, UUID id, ChunkPos cpos){
-        super(MultiBlockHandler.getChunkDir(w,cpos).toAbsolutePath() + "/" + type.getCanonicalName() + "_" + id + ".json");
+    public MultiBlockInstance(Class<? extends MultiBlockInstance> type, World w, UUID id, ChunkPos cpos){
+        super(MultiBlockService.getMBPath(w,cpos,type,id));
         this.type=type;
         this.ID = id;
         this.world=w;
@@ -61,7 +64,7 @@ public class MultiBlockInstance extends JSONTrackable<MultiBlockInstance> {
         box.mbi = this;
         return this;
     }
-    public void revalidate(Block b, MultiBlockWorldData dat) {
+    public void revalidate(Block b, MultiBlockChunkDataHandler dat) {
         Location l = b.getLocation();
         SQLVector3i v = xyz.value();
         Vector sp = validTemplate.getOriginTranslation();
@@ -75,7 +78,7 @@ public class MultiBlockInstance extends JSONTrackable<MultiBlockInstance> {
             invalidate(dat);
         }
     }
-    public void revalidate(Block b, BlockInstance in, MultiBlockWorldData dat) {
+    public void revalidate(Block b, BlockInstance in, MultiBlockChunkDataHandler dat) {
         Location l = b.getLocation();
         SQLVector3i v = xyz.value();
         Vector sp = validTemplate.getOriginTranslation();
@@ -90,14 +93,14 @@ public class MultiBlockInstance extends JSONTrackable<MultiBlockInstance> {
         }
     }
 
-    protected void invalidate(MultiBlockWorldData dat) {
+    protected void invalidate(MultiBlockChunkDataHandler dat) {
         dat.removeMultiBlock(this);
     }
 
     /**  N      E      S      W
-     * p      b a p  k j b      k
+     * p      b a p  interfaces j b      interfaces
      * a c    j c      c a    c j
-     * b j k  k          p  p a b
+     * b j interfaces  interfaces          p  p a b
      *
      */
 
@@ -138,7 +141,7 @@ public class MultiBlockInstance extends JSONTrackable<MultiBlockInstance> {
         if(state.isValid()) return state;
         else return bestCase(state, checkValid(blocks.flipX(),w,startPos).facing(orientation).flip(true));
     }
-    private static MultiBlockState bestCase(MultiBlockState state1, MultiBlockState state2){
+    public static MultiBlockState bestCase(MultiBlockState state1, MultiBlockState state2){
         if(state1.count > state2.count) return state1;
         return state2;
     }
@@ -149,7 +152,7 @@ public class MultiBlockInstance extends JSONTrackable<MultiBlockInstance> {
         });
     }
     /**
-     * Returns the state of the template in the world.
+     * Returns the state of the template in the worldstorage.
      */
     private static MultiBlockState checkValid(BlockTemplate blocks, World w, Location startPos){
         startPos = startPos.clone().add(blocks.getOriginTranslation());
@@ -175,7 +178,7 @@ public class MultiBlockInstance extends JSONTrackable<MultiBlockInstance> {
     public String toString() {
         return "MultiBlockInstance{" +
                 "type=" + type +
-                ", world=" + world.getUID() +
+                ", worldstorage=" + world.getUID() +
                 ", xyz=" + xyz +
                 ", facing=" + facing +
                 ", ID=" + ID +

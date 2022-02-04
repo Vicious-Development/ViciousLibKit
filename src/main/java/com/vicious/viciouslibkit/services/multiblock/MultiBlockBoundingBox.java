@@ -1,6 +1,7 @@
-package com.vicious.viciouslibkit.multiblock;
+package com.vicious.viciouslibkit.services.multiblock;
 
 import com.vicious.viciouslibkit.block.BlockTemplate;
+import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockInstance;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 

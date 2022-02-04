@@ -1,6 +1,6 @@
 package com.vicious.viciouslibkit.util.map;
 
-import com.vicious.viciouslibkit.worldcrafting.WorldCraftingLocation;
+import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
@@ -10,28 +10,28 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-public class LocationItemMap extends HashMap<WorldCraftingLocation,ItemStackMap> {
+public class LocationItemMap extends HashMap<SQLVector3i,ItemStackMap> {
     /**
      * @param stack the stack to add.
      * @return if the location was already present.
      */
-    public boolean add(WorldCraftingLocation l, ItemStack stack){
+    public boolean add(SQLVector3i l, ItemStack stack){
         boolean existed = verifyExistence(l);
         get(l).add(stack);
         return existed;
     }
-    public boolean add(WorldCraftingLocation l, ItemStackMap stacks){
+    public boolean add(SQLVector3i l, ItemStackMap stacks){
         boolean existed = verifyExistence(l);
         get(l).combine(stacks);
         return existed;
     }
 
-    public ItemStackMap get(WorldCraftingLocation key) {
+    public ItemStackMap get(SQLVector3i key) {
         verifyExistence(key);
         return super.get(key);
     }
 
-    private boolean verifyExistence(WorldCraftingLocation l) {
+    private boolean verifyExistence(SQLVector3i l) {
         if(containsKey(l)) {
             return true;
         }

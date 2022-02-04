@@ -11,6 +11,12 @@ import org.bukkit.block.data.type.Slab;
 import java.util.Map;
 
 public class BlockInstance {
+    public static final BlockInstance STONE = new BlockInstance(Material.STONE);
+    public static final BlockInstance STONEBRICK = new BlockInstance(Material.STONE_BRICKS);
+    public static final BlockInstance IRONBLOCK = new BlockInstance(Material.IRON_BLOCK);
+    public static final BlockInstance GOLDBLOCK = new BlockInstance(Material.GOLD_BLOCK);
+    public static final BlockInstance DIAMONDBLOCK = new BlockInstance(Material.DIAMOND_BLOCK);
+
     public static final BlockInstance ENDSTONE = new BlockInstance(Material.END_STONE);
     public static final BlockInstance ENDSTONEBRICK = new BlockInstance(Material.END_STONE_BRICKS);
     public static final BlockInstance AIR = new BlockInstance(Material.AIR);
@@ -79,13 +85,24 @@ public class BlockInstance {
         }
         return true;
     }
+    public boolean matches(BlockInstance in){
+        return this.equals(in);
+    }
     public BlockInstance rotateCounterClockwise(){
-        if(facing == null) return this;
-        return new BlockInstance(material).facing(FacingUtil.getCounterClockWise90(facing));
+        return new BlockInstance(material)
+                .orientation(FacingUtil.get90Horizontal(axis))
+                .facing(FacingUtil.getCounterClockWise90(facing))
+                .slabType(slabType)
+                .vOrientation(verticalOrientation)
+                .waterLogged(waterLogged);
     }
     public BlockInstance rotateClockwise(){
-        if(facing == null) return this;
-        return new BlockInstance(material).facing(FacingUtil.getClockwise90(facing));
+        return new BlockInstance(material)
+                .orientation(FacingUtil.get90Horizontal(axis))
+                .facing(FacingUtil.getClockwise90(facing))
+                .slabType(slabType)
+                .vOrientation(verticalOrientation)
+                .waterLogged(waterLogged);
     }
 
     public BlockInstance orientation(Axis axis) {

@@ -1,5 +1,6 @@
 package com.vicious.viciouslibkit.worldcrafting;
 
+import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
 import com.vicious.viciouslibkit.util.LibKitUtil;
 import com.vicious.viciouslibkit.util.map.ItemStackMap;
 import com.vicious.viciouslibkit.util.map.LocationItemMap;
@@ -18,7 +19,8 @@ import java.util.Map;
 public class InWorldItemCrafting {
     public static Map<World, LocationItemMap> inWorldCraftingItems = new HashMap<>();
     public static ItemStackMap getInWorldCraftingAt(Location l) {
-        return inWorldCraftingItems.get(l.getWorld()).get(new WorldCraftingLocation(l));
+        verifyExistence(l);
+        return inWorldCraftingItems.get(l.getWorld()).get(new SQLVector3i(l.getBlockX(), l.getBlockY(), l.getBlockZ()));
     }
 
     public static void emptyLocation(World w,Location l) {
@@ -40,6 +42,13 @@ public class InWorldItemCrafting {
                 dropSpawn(itemStack,w,l);
             }
         }
+    }
+    public static boolean verifyExistence(Location l){
+        if(inWorldCraftingItems.containsKey(l.getWorld())) {
+            return true;
+        }
+        inWorldCraftingItems.put(l.getWorld(), new LocationItemMap());
+        return false;
     }
     private static void dropSpawn(ItemStack result, World w, Location l){
         Item item = w.dropItem(l, result);

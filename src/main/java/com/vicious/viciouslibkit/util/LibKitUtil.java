@@ -2,6 +2,7 @@ package com.vicious.viciouslibkit.util;
 
 import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
 import com.vicious.viciouslibkit.block.BlockInstance;
+import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -49,6 +50,9 @@ public class LibKitUtil {
      */
     public static SQLVector3i rotateQuad4TranslateQuad1(SQLVector3i vec, int q1Width){
         return new SQLVector3i(vec.z,vec.y,-vec.x+q1Width);
+    }
+    public static SQLVector3i fromLocation(Location l){
+        return new SQLVector3i(l.getBlockX(), l.getBlockY(), l.getBlockZ());
     }
 
     public static Vector zeroVelocity(){
