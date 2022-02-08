@@ -48,6 +48,7 @@ public class NetChunkDataHandler implements IChunkDataHandler {
     @Override
     public void handleBlockChange(Block b) {
         NetNode node = nodes.get(LibKitUtil.fromLocation(b.getLocation()));
+        if(node == null) return;
         if(!node.revalidate(b)){
             node.invalidate();
             removeNetNode(node);
@@ -57,6 +58,7 @@ public class NetChunkDataHandler implements IChunkDataHandler {
     @Override
     public void handleBlockChange(BlockInstance bi, Block b) {
         NetNode node = nodes.get(LibKitUtil.fromLocation(b.getLocation()));
+        if(node == null) return;
         if(!node.revalidate(bi)){
             node.invalidate();
             removeNetNode(node);

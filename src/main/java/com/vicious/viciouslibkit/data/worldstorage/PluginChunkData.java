@@ -3,7 +3,9 @@ package com.vicious.viciouslibkit.data.worldstorage;
 import com.vicious.viciouslibkit.ViciousLibKit;
 import com.vicious.viciouslibkit.block.BlockInstance;
 import com.vicious.viciouslibkit.data.DataTypeNotFoundException;
+import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockChunkDataHandler;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockInstance;
+import com.vicious.viciouslibkit.data.provided.netnode.NetChunkDataHandler;
 import com.vicious.viciouslibkit.interfaces.IChunkDataHandler;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
@@ -14,6 +16,14 @@ import java.util.function.Supplier;
 
 public class PluginChunkData {
     private static Map<Class<? extends IChunkDataHandler>, Supplier<IChunkDataHandler>> registeredDataClasses = new HashMap<>();
+    static {
+        registerDataType(MultiBlockChunkDataHandler.class,MultiBlockChunkDataHandler::new);
+        registerDataType(NetChunkDataHandler.class,NetChunkDataHandler::new);
+    }
+    public static void registerDataType(Class<? extends IChunkDataHandler> cls, Supplier<IChunkDataHandler> dataHandlerSupplier){
+        registeredDataClasses.put(cls,dataHandlerSupplier);
+    }
+
     private Map<Class<? extends IChunkDataHandler>,IChunkDataHandler> handlers = new HashMap<>();
     public PluginChunkData(){
         registeredDataClasses.forEach((c,d)-> handlers.put(c,d.get()));
@@ -37,9 +47,7 @@ public class PluginChunkData {
         }
         return null;
     }
-    public static void registerDataType(Class<? extends IChunkDataHandler> cls, Supplier<IChunkDataHandler> dataHandlerSupplier){
-        registeredDataClasses.put(cls,dataHandlerSupplier);
-    }
+
 
     public void save(Chunk c) {
         handlers.forEach((cls,h)->{

@@ -20,8 +20,9 @@ public interface IChunkDataHandler {
     void handleBlockChange(BlockInstance bi, Block b);
     default File[] getFiles(Chunk c){
         ChunkPos cpos = new ChunkPos(c.getX(),c.getZ());
-        Path p = WorldDataDirectory.getChunkDirForData(c.getWorld(),cpos, getDataID());
+        Path p = WorldDataDirectory.getChunkDirForDataDoNotCreate(c.getWorld(),cpos, getDataID());
         File dir = new File(p.toAbsolutePath().toString());
+        if(!dir.exists()) return new File[0];
         return dir.listFiles();
     }
 

@@ -91,9 +91,9 @@ public class PluginWorldData {
     }
 
     public void initChunk(Chunk c){
-        PluginChunkData data = new PluginChunkData();
-        chunkMap.put(new ChunkPos(c.getX(),c.getZ()),data);
-        data.load(c);
+        ChunkPos p = new ChunkPos(c.getX(),c.getZ());
+        chunkMap.putIfAbsent(p,new PluginChunkData());
+        chunkMap.get(p).load(c);
     }
     public void removeChunk(Chunk c){
         PluginChunkData data = chunkMap.remove(new ChunkPos(c.getX(),c.getZ()));
@@ -104,6 +104,7 @@ public class PluginWorldData {
     }
 
     public PluginChunkData getChunkData(ChunkPos pos) {
+        chunkMap.putIfAbsent(pos,new PluginChunkData());
         return chunkMap.get(pos);
     }
 }

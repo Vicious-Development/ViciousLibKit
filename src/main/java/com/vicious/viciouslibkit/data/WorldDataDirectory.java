@@ -37,4 +37,12 @@ public class WorldDataDirectory {
     public static Path getWorldDir(World w){
         return FileUtil.createDirectoryIfDNE(LibKitDirectories.rootDir() + "/" + w.getName());
     }
+
+    public static Path getChunkDirForDataDoNotCreate(World w, ChunkPos p, String dataId) {
+        return FileUtil.toPath(getChunkdirDoNotCreate(w,p).toAbsolutePath().toString() + "/" + dataId);
+    }
+
+    private static Path getChunkdirDoNotCreate(World w, ChunkPos p) {
+        return FileUtil.toPath(getWorldViciousDir(w).toAbsolutePath().toString() + "/" + p.x + "_" + p.z);
+    }
 }

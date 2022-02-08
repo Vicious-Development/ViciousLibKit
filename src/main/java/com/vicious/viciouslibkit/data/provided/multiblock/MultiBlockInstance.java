@@ -52,6 +52,10 @@ public class MultiBlockInstance extends JSONTrackable<MultiBlockInstance> {
         this.ID = id;
         this.world=w;
     }
+    public void initValidTemplate(){
+        validTemplate=templates.get(type).rotate(this.facing.value());
+        if(this.flipped.value()) validTemplate=validTemplate.flipX();
+    }
 
     @Override
     public void onInitialization() {
@@ -148,7 +152,7 @@ public class MultiBlockInstance extends JSONTrackable<MultiBlockInstance> {
     public void validate(){
         Location loc = new Location(world,xyz.value().x,xyz.value().y,xyz.value().z);
         forEachSolid(loc, world,(w, l)->{
-            WorldUtil.spawnHoveringParticlesAround(l,w, Particle.FIREWORKS_SPARK,1,0.15,0.15,0.15,0.16,4);
+            WorldUtil.spawnHoveringParticlesAround(l,w, Particle.FIREWORKS_SPARK,1,0.15,0.15,0.15,0.16,3);
         });
     }
     /**
