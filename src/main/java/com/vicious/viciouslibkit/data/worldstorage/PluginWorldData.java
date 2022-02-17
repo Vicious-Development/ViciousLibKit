@@ -4,6 +4,7 @@ import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
 import com.vicious.viciouslibkit.block.BlockInstance;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockInstance;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockChunkDataHandler;
+import com.vicious.viciouslibkit.interfaces.IChunkDataHandler;
 import com.vicious.viciouslibkit.services.multiblock.MultiBlockService;
 import com.vicious.viciouslibkit.services.multiblock.MultiBlockState;
 import com.vicious.viciouslibkit.util.ChunkPos;
@@ -28,13 +29,14 @@ public class PluginWorldData {
         ensureExists(id);
         return map.get(id);
     }
-
-    //Instance
-    public Map<ChunkPos,PluginChunkData> chunkMap = new HashMap<>();
-    public final UUID WORLDID;
-    public PluginWorldData(UUID worldid){
-        WORLDID=worldid;
-        map.put(worldid,this);
+    public static PluginChunkData getChunkData(World w, Location l){
+        return getWorldData(w).getChunkData(ChunkPos.fromBlockPos(l));
+    }
+    public static PluginChunkData getChunkData(World w, ChunkPos c){
+        return getWorldData(w).getChunkData(c);
+    }
+    public static <T extends IChunkDataHandler> T getChunkDataHandler(World w, ChunkPos c, Class<T> handlerClass){
+        return getWorldData(w).getChunkData(c).getDataHandlerExceptionless(handlerClass);
     }
     public static void ensureExists(World w){
         if(!map.containsKey(w.getUID())) map.put(w.getUID(),new PluginWorldData(w.getUID()));
@@ -90,6 +92,14 @@ public class PluginWorldData {
         cd.handleBlockChange(bi,b);
     }
 
+    //Instance
+    public Map<ChunkPos,PluginChunkData> chunkMap = new HashMap<>();
+    public final UUID WORLDID;
+    public PluginWorldData(UUID worldid){
+        WORLDID=worldid;
+        map.put(worldid,this);
+    }
+
     public void initChunk(Chunk c){
         ChunkPos p = new ChunkPos(c.getX(),c.getZ());
         chunkMap.putIfAbsent(p,new PluginChunkData());
@@ -97,7 +107,7 @@ public class PluginWorldData {
     }
     public void removeChunk(Chunk c){
         PluginChunkData data = chunkMap.remove(new ChunkPos(c.getX(),c.getZ()));
-        saveChunkData(data,c);
+        data.unload(c);
     }
     public void saveChunkData(PluginChunkData data, Chunk c){
         data.save(c);

@@ -15,6 +15,7 @@ import java.util.UUID;
 
 public interface IChunkDataHandler {
     void load(Chunk c);
+    void unload(Chunk c);
     void save(Chunk c);
     void handleBlockChange(Block b);
     void handleBlockChange(BlockInstance bi, Block b);

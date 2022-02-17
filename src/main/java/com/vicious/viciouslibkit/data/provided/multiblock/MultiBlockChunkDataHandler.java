@@ -14,6 +14,7 @@ import com.vicious.viciouslibkit.util.map.PositionMap;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.Hopper;
 import org.bukkit.util.Vector;
 
 import java.io.File;
@@ -41,10 +42,25 @@ public class MultiBlockChunkDataHandler implements IChunkDataHandler {
             MBReconstructor<?> constructor = MultiBlockService.reconstructors.get(cls);
             MultiBlockInstance mbi = constructor.construct(cls, c.getWorld(), UUID.fromString(file.getName().substring(underscoreidx + 1).replace(".json", "")), cpos);
             mbi.executeIfInitialized((x) ->{
-                mbi.initValidTemplate();
-                addMultiblock(mbi);
+                try {
+                    mbi.initValidTemplate();
+                    addMultiblock(mbi);
+                } catch (Exception e){
+                    ViciousLibKit.logger().warning(e.getMessage());
+                    e.printStackTrace();
+                }
             });
         }
+    }
+
+    @Override
+    public void unload(Chunk c) {
+        save(c);
+        multiblocks.forEach((v,mbi)->{
+            mbi.invalidate(this);
+        });
+        multiblocks.clear();
+        boundingBoxes.clear();
     }
 
     @Override
@@ -85,6 +101,7 @@ public class MultiBlockChunkDataHandler implements IChunkDataHandler {
         return multiblocks.containsKey(l);
     }
     public void addBoundingBox(MultiBlockInstance mbi){
+        updateBoxes();
         SQLVector3i v = mbi.xyz.value();
         BlockTemplate template = mbi.getTemplate();
         Vector ot = template.getOriginTranslation();
@@ -119,27 +136,26 @@ public class MultiBlockChunkDataHandler implements IChunkDataHandler {
     }
     public void checkBlockUpdate(Block b){
         Location l = b.getLocation();
-        //Avoid concurrent mods.
-        for (MultiBlockBoundingBox box : boxesToRemove) {
-            cycleChunks(box,(k)->k.remove(box));
-        }
-        boxesToRemove.clear();
         //TODO: Further optimize by looping only once.
+        updateBoxes();
         for (MultiBlockBoundingBox box : boundingBoxes) {
             if(box.isWithin(l)){
                 box.mbi.revalidate(b, this);
             }
         }
-
     }
-    public void checkBlockUpdate(BlockInstance bi, Block b) {
-        Location l = b.getLocation();
+
+    private void updateBoxes() {
         //Avoid concurrent mods.
         for (MultiBlockBoundingBox box : boxesToRemove) {
             cycleChunks(box,(k)->k.remove(box));
         }
         boxesToRemove.clear();
+    }
 
+    public void checkBlockUpdate(BlockInstance bi, Block b) {
+        Location l = b.getLocation();
+        updateBoxes();
         //TODO: Further optimize by looping only once.
         for (MultiBlockBoundingBox box : boundingBoxes) {
             if(box.isWithin(l)){

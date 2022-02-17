@@ -24,6 +24,9 @@ public class Ticker {
             }
         },1,1);
     }
+    public static void onNextTick(Runnable exec){
+        Bukkit.getScheduler().scheduleSyncDelayedTask(ViciousLibKit.INSTANCE,exec,1);
+    }
     public static void add(ITickable tickable){
         toAdd.add(tickable);
     }

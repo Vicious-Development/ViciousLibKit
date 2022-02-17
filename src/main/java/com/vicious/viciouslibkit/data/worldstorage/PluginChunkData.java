@@ -74,4 +74,10 @@ public class PluginChunkData {
     public void removeMultiBlock(MultiBlockInstance mbi) {
 
     }
+
+    public void unload(Chunk c) {
+        handlers.forEach((cls,h)->{
+            h.unload(c);
+        });
+    }
 }

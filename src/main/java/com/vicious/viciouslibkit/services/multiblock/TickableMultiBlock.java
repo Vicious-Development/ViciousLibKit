@@ -1,5 +1,6 @@
 package com.vicious.viciouslibkit.services.multiblock;
 
+import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockChunkDataHandler;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockInstance;
 import com.vicious.viciouslibkit.event.Ticker;
 import com.vicious.viciouslibkit.interfaces.ITickable;
@@ -17,7 +18,7 @@ import java.util.UUID;
  * If you use recipes, try not to check recipes every tick. Store the current recipe to memory and only validate on an inventory change.
  * Thank you for reading and considering the stability of servers.
  */
-public class TickableMultiBlock extends MultiBlockInstance implements ITickable {
+public abstract class TickableMultiBlock extends MultiBlockInstance implements ITickable {
     private boolean isTicking = false;
     public TickableMultiBlock(Class<? extends MultiBlockInstance> mbType, World w, Location l, BlockFace dir, boolean flipped, UUID id) {
         super(mbType, w, l, dir, flipped, id);
@@ -29,8 +30,9 @@ public class TickableMultiBlock extends MultiBlockInstance implements ITickable 
     @Override
     public void validate() {
         super.validate();
-        addToTicker();
+        if(tickOnInit()) addToTicker();
     }
+
     public void addToTicker(){
         if(!isTicking) Ticker.add(this);
         isTicking=true;
@@ -41,7 +43,14 @@ public class TickableMultiBlock extends MultiBlockInstance implements ITickable 
     }
 
     @Override
+    protected void invalidate(MultiBlockChunkDataHandler dat) {
+        super.invalidate(dat);
+        removeFromTicker();
+    }
+
+    @Override
     public void tick() {
 
     }
+    public abstract boolean tickOnInit();
 }

@@ -41,8 +41,18 @@ public class NetChunkDataHandler implements IChunkDataHandler {
     }
 
     @Override
-    public void save(Chunk c) {
+    public void unload(Chunk c) {
+        nodes.forEach((k,n)->{
+            n.invalidate();
+        });
+        nodes.clear();
+    }
 
+    @Override
+    public void save(Chunk c) {
+        nodes.forEach((k,n)->{
+            n.save();
+        });
     }
 
     @Override

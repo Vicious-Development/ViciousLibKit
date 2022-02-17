@@ -4,6 +4,8 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Objects;
+
 public class StackType {
     public Material material;
     public ItemMeta meta;
@@ -21,5 +23,18 @@ public class StackType {
     }
     public String toString(){
         return "StackType: " + material + " : " + meta;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StackType stackType = (StackType) o;
+        return material == stackType.material && Objects.equals(meta, stackType.meta);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(material, meta);
     }
 }
