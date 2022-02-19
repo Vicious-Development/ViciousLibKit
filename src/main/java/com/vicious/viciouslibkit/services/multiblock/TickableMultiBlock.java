@@ -52,5 +52,8 @@ public abstract class TickableMultiBlock extends MultiBlockInstance implements I
     public void tick() {
 
     }
+    public boolean isTicking(){
+        return isTicking;
+    }
     public abstract boolean tickOnInit();
 }

@@ -5,22 +5,30 @@ import com.vicious.viciouslibkit.interfaces.ITickable;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Ticker {
-    private static final List<ITickable> tickables = new ArrayList<>();
+    private static final Map<ITickable,ITickable> tickables = new IdentityHashMap<>();
     private static final List<ITickable> toAdd = new ArrayList<>();
     private static final List<ITickable> toRemove = new ArrayList<>();
     static{
         Bukkit.getScheduler().scheduleSyncRepeatingTask(ViciousLibKit.INSTANCE,()->{
-            while(!toRemove.isEmpty()){
-                tickables.remove(toRemove.remove(0));
-            }
-            while(!toAdd.isEmpty()){
-                tickables.add(toAdd.remove(0));
-            }
-            for (ITickable tickable : tickables) {
-                tickable.tick();
+            try {
+                while (!toAdd.isEmpty()) {
+                    ITickable tickable = toAdd.remove(0);
+                    tickables.put(tickable, tickable);
+                }
+                while (!toRemove.isEmpty()) {
+                    tickables.remove(toRemove.remove(0));
+                }
+                tickables.forEach((k, v) -> {
+                    v.tick();
+                });
+            } catch (Exception e){
+                ViciousLibKit.logger().warning("Exception in ticker: " +  e.getMessage());
+                e.printStackTrace();
             }
         },1,1);
     }
@@ -31,6 +39,6 @@ public class Ticker {
         toAdd.add(tickable);
     }
     public static void remove(ITickable tickable){
-        toAdd.remove(tickable);
+        toRemove.add(tickable);
     }
 }
