@@ -43,8 +43,10 @@ public class MultiBlockChunkDataHandler implements IChunkDataHandler {
             MultiBlockInstance mbi = constructor.construct(cls, c.getWorld(), UUID.fromString(file.getName().substring(underscoreidx + 1).replace(".json", "")), cpos);
             mbi.executeIfInitialized((x) ->{
                 try {
-                    mbi.initValidTemplate();
-                    addMultiblock(mbi);
+                    if(!multiblocks.containsKey(mbi.xyz.value())) {
+                        mbi.initValidTemplate();
+                        addMultiblock(mbi);
+                    }
                 } catch (Exception e){
                     ViciousLibKit.logger().warning(e.getMessage());
                     e.printStackTrace();
@@ -91,11 +93,14 @@ public class MultiBlockChunkDataHandler implements IChunkDataHandler {
         try {
             addBoundingBox(mbi);
         } catch (Exception e){
-            System.err.println(e.getMessage());
+            ViciousLibKit.logger().warning(e.getMessage());
             e.printStackTrace();
         }
         mbi.validate();
         mbi.save();
+    }
+    public MultiBlockInstance getMultiblock(SQLVector3i pos){
+        return multiblocks.get(pos);
     }
     public boolean checkExists(SQLVector3i l) {
         return multiblocks.containsKey(l);

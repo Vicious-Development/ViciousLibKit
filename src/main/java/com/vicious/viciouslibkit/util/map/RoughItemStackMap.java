@@ -4,49 +4,27 @@ import com.vicious.viciouslibkit.item.StackType;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.checkerframework.checker.units.qual.A;
-import org.checkerframework.checker.units.qual.K;
 
 import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.Predicate;
 
 /**
- * I found myself using a Map Material,ItemStack so much that I decided to create a version of a hashmap specifically for ItemStacks.
- * Items are mapped by their metadata and material, any item of the same mapping will be combined into one stack regardless if the stack exceeds maxstacksize.
- * Use getStacks() to get all stacks following stack size requirements.
+ * Acts as an ItemStackMap ignoring NBT.
  */
-public class ItemStackMap extends HashMap<StackType,ItemStack> {
+public class RoughItemStackMap extends EnumMap<Material,ItemStack> {
     private Map<Material, List<StackType>> metaMap = new HashMap<>();
-    private StackType getStackType(ItemStack stack){
-        List<StackType> stl = metaMap.get(stack.getType());
-        if(stl != null) {
-            if (stl.size() == 1) {
-                return stl.get(0);
-            } else if (stl.size() > 1) {
-                for (StackType st : stl) {
-                    if (st.isType(stack)) {
-                        return st;
-                    }
-                }
-            }
-        }
-        List<StackType> lst = new ArrayList<>();
-        StackType st = new StackType(stack);
-        lst.add(st);
-        metaMap.put(stack.getType(),lst);
-        return st;
+
+    public RoughItemStackMap() {
+        super(Material.class);
     }
     public ItemStack get(ItemStack basis){
-        return get(getStackType(basis));
+        return get(basis.getType());
     }
     /**
      * @param stack the stack to add.
      * @return if the Material was already present.
      */
     public boolean add(ItemStack stack){
-        StackType mat = getStackType(stack);
+        Material mat = stack.getType();
         if(putIfAbsent(mat,stack.clone()) != null){
             ItemStack mappedStack = get(mat);
             mappedStack.setAmount(mappedStack.getAmount()+stack.getAmount());
@@ -62,7 +40,7 @@ public class ItemStackMap extends HashMap<StackType,ItemStack> {
      * @return
      */
     public boolean reduceBy(ItemStack stack){
-        StackType mat = getStackType(stack);
+        Material mat = stack.getType();
         ItemStack mappedStack = get(mat);
         if(mappedStack == null) return false;
         mappedStack.setAmount(mappedStack.getAmount()-stack.getAmount());
@@ -70,13 +48,13 @@ public class ItemStackMap extends HashMap<StackType,ItemStack> {
         return mappedStack.getAmount() < 0;
     }
 
-    public ItemStackMap addAll(Collection<ItemStack> items){
+    public RoughItemStackMap addAll(Collection<ItemStack> items){
         for (ItemStack item : items) {
             add(item);
         }
         return this;
     }
-    public ItemStackMap addFromEntities(Item... itemEntities) {
+    public RoughItemStackMap addFromEntities(Item... itemEntities) {
         for (Item item : itemEntities) {
             ItemStack stack = item.getItemStack();
             add(stack);
@@ -91,7 +69,7 @@ public class ItemStackMap extends HashMap<StackType,ItemStack> {
         }
         return stacks;
     }
-    private ItemStackMap convertToLegalStacks(List<ItemStack> toAddTo, ItemStack value){
+    private RoughItemStackMap convertToLegalStacks(List<ItemStack> toAddTo, ItemStack value){
         int maxStackCount = value.getAmount()/value.getMaxStackSize()-1;
         int modular = value.getAmount()%value.getMaxStackSize();
         if(maxStackCount > 0){
@@ -109,7 +87,7 @@ public class ItemStackMap extends HashMap<StackType,ItemStack> {
         return this;
     }
 
-    public ItemStackMap combine(ItemStackMap stacks) {
+    public RoughItemStackMap combine(RoughItemStackMap stacks) {
         for (ItemStack value : stacks.values()) {
             add(value);
         }
@@ -121,8 +99,8 @@ public class ItemStackMap extends HashMap<StackType,ItemStack> {
      */
     public boolean hasAll(List<ItemStack> stacks){
         //Map to unify stacks.
-        ItemStackMap mapped = new ItemStackMap().addAll(stacks);
-        for (StackType k : mapped.keySet()) {
+        RoughItemStackMap mapped = new RoughItemStackMap().addAll(stacks);
+        for (Material k : mapped.keySet()) {
             ItemStack mapStack = get(k);
             if (mapStack == null) return false;
             ItemStack expected = mapped.get(k);

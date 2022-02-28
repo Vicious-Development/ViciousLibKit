@@ -18,7 +18,7 @@ public class Ticker {
             try {
                 while (!toAdd.isEmpty()) {
                     ITickable tickable = toAdd.remove(0);
-                    tickables.put(tickable, tickable);
+                    tickables.putIfAbsent(tickable, tickable);
                 }
                 while (!toRemove.isEmpty()) {
                     tickables.remove(toRemove.remove(0));

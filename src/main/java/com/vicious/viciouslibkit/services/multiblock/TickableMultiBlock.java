@@ -34,11 +34,11 @@ public abstract class TickableMultiBlock extends MultiBlockInstance implements I
     }
 
     public void addToTicker(){
-        if(!isTicking) Ticker.add(this);
+        Ticker.add(this);
         isTicking=true;
     }
     public void removeFromTicker(){
-        if(isTicking) Ticker.remove(this);
+        Ticker.remove(this);
         isTicking=false;
     }
 
