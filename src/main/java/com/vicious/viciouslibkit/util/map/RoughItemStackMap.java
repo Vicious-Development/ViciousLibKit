@@ -70,7 +70,7 @@ public class RoughItemStackMap extends EnumMap<Material,ItemStack> {
         return stacks;
     }
     private RoughItemStackMap convertToLegalStacks(List<ItemStack> toAddTo, ItemStack value){
-        int maxStackCount = value.getAmount()/value.getMaxStackSize()-1;
+        int maxStackCount = value.getAmount()/value.getMaxStackSize();
         int modular = value.getAmount()%value.getMaxStackSize();
         if(maxStackCount > 0){
             for (int i = 0; i < maxStackCount; i++) {
