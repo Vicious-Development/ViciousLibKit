@@ -92,7 +92,7 @@ public class ItemStackMap extends HashMap<StackType,ItemStack> {
         return stacks;
     }
     private ItemStackMap convertToLegalStacks(List<ItemStack> toAddTo, ItemStack value){
-        int maxStackCount = value.getAmount()/value.getMaxStackSize()-1;
+        int maxStackCount = value.getAmount()/value.getMaxStackSize();
         int modular = value.getAmount()%value.getMaxStackSize();
         if(maxStackCount > 0){
             for (int i = 0; i < maxStackCount; i++) {
@@ -101,8 +101,8 @@ public class ItemStackMap extends HashMap<StackType,ItemStack> {
                 toAddTo.add(toAdd);
             }
         }
-        if(modular != 0){
-            ItemStack toAdd = new ItemStack(value.getType(),modular);
+        if(modular != 0) {
+            ItemStack toAdd = new ItemStack(value.getType(), modular);
             toAdd.setItemMeta(value.getItemMeta());
             toAddTo.add(toAdd);
         }
