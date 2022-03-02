@@ -1,6 +1,6 @@
 package com.vicious.viciouslibkit.event;
 
-import com.vicious.viciouslibkit.block.BlockInstance;
+import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.data.worldstorage.PluginWorldData;
 import com.vicious.viciouslibkit.services.multiblock.MultiBlockService;
 import com.vicious.viciouslibkit.services.multiblock.MultiBlockState;

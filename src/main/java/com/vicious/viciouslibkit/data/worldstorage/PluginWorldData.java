@@ -1,7 +1,7 @@
 package com.vicious.viciouslibkit.data.worldstorage;
 
 import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
-import com.vicious.viciouslibkit.block.BlockInstance;
+import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockInstance;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockChunkDataHandler;
 import com.vicious.viciouslibkit.interfaces.IChunkDataHandler;

@@ -1,11 +1,8 @@
 package com.vicious.viciouslibkit.data.provided.netnode;
 
-import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
 import com.vicious.viciouslibkit.ViciousLibKit;
-import com.vicious.viciouslibkit.block.BlockInstance;
-import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockInstance;
+import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.interfaces.IChunkDataHandler;
-import com.vicious.viciouslibkit.services.multiblock.MultiBlockService;
 import com.vicious.viciouslibkit.util.ChunkPos;
 import com.vicious.viciouslibkit.util.LibKitUtil;
 import com.vicious.viciouslibkit.util.map.PositionMap;

@@ -1,4 +1,4 @@
-package com.vicious.viciouslibkit.block;
+package com.vicious.viciouslibkit.block.blockinstance;
 
 import com.vicious.viciouslibkit.util.FacingUtil;
 import org.bukkit.Axis;
@@ -7,8 +7,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.*;
 import org.bukkit.block.data.type.Slab;
-
-import java.util.Map;
 
 public class BlockInstance {
     public static final BlockInstance STONE = new BlockInstance(Material.STONE);

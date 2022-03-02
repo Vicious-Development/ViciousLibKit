@@ -1,6 +1,7 @@
 package com.vicious.viciouslibkit.block;
 
 import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
+import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.util.LibKitUtil;
 import org.bukkit.block.BlockFace;
 import org.bukkit.util.Vector;

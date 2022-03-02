@@ -3,11 +3,10 @@ package com.vicious.viciouslibkit.data.provided.netnode;
 import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
 import com.vicious.viciouslib.database.tracking.JSONTrackable;
 import com.vicious.viciouslib.database.tracking.values.TrackableObject;
-import com.vicious.viciouslibkit.block.BlockInstance;
+import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.services.netnode.NetNodeService;
 import com.vicious.viciouslibkit.util.ChunkPos;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 

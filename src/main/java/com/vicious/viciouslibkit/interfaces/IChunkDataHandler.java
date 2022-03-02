@@ -1,17 +1,13 @@
 package com.vicious.viciouslibkit.interfaces;
 
-import com.vicious.viciouslib.util.FileUtil;
-import com.vicious.viciouslibkit.block.BlockInstance;
+import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.data.WorldDataDirectory;
 import com.vicious.viciouslibkit.util.ChunkPos;
 import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.UUID;
 
 public interface IChunkDataHandler {
     void load(Chunk c);

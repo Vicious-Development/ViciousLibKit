@@ -1,7 +1,7 @@
 package com.vicious.viciouslibkit.services.multiblock;
 
 import com.vicious.viciouslib.util.FileUtil;
-import com.vicious.viciouslibkit.block.BlockInstance;
+import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.block.BlockTemplate;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockChunkDataHandler;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockInstance;

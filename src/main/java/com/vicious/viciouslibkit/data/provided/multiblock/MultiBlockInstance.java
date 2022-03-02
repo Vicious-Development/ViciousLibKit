@@ -4,7 +4,7 @@ import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
 import com.vicious.viciouslib.database.tracking.JSONTrackable;
 import com.vicious.viciouslib.database.tracking.values.TrackableEnum;
 import com.vicious.viciouslib.database.tracking.values.TrackableObject;
-import com.vicious.viciouslibkit.block.BlockInstance;
+import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.block.BlockTemplate;
 import com.vicious.viciouslibkit.services.multiblock.MultiBlockBoundingBox;
 import com.vicious.viciouslibkit.services.multiblock.MultiBlockService;

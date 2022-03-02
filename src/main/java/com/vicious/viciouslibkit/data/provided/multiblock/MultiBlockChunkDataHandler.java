@@ -2,7 +2,7 @@ package com.vicious.viciouslibkit.data.provided.multiblock;
 
 import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
 import com.vicious.viciouslibkit.ViciousLibKit;
-import com.vicious.viciouslibkit.block.BlockInstance;
+import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.block.BlockTemplate;
 import com.vicious.viciouslibkit.data.*;
 import com.vicious.viciouslibkit.data.worldstorage.PluginChunkData;
@@ -14,7 +14,6 @@ import com.vicious.viciouslibkit.util.map.PositionMap;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.block.Hopper;
 import org.bukkit.util.Vector;
 
 import java.io.File;

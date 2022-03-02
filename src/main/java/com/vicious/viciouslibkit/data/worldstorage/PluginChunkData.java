@@ -1,7 +1,7 @@
 package com.vicious.viciouslibkit.data.worldstorage;
 
 import com.vicious.viciouslibkit.ViciousLibKit;
-import com.vicious.viciouslibkit.block.BlockInstance;
+import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.data.DataTypeNotFoundException;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockChunkDataHandler;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockInstance;
