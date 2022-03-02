@@ -44,10 +44,13 @@ public class MultipleBlockInstances extends BlockInstance{
     }
 
     public String verboseInfo() {
-        String ret = "MultipleBInstances: ";
-        for (BlockInstance instance : instances) {
-            ret += instance.verboseInfo();
-            ret += ",";
+        String ret = "Any of: ";
+        for (int i = 0; i < instances.size(); i++) {
+            BlockInstance instance = instances.get(i);
+            ret += instance.material;
+            if(i != instances.size()-1){
+                ret += ",";
+            }
         }
         return ret;
     }
