@@ -55,10 +55,12 @@ public class InventoryWrapperChunkHandler implements IChunkDataHandler {
     }
 
     @Override
-    public void handleBlockChange(Block block) {}
+    public void handleBlockChange(Block block) {
+    }
 
     @Override
-    public void handleBlockChange(BlockInstance blockInstance, Block block) {}
+    public void handleBlockChange(BlockInstance blockInstance, Block block) {
+    }
 
     @Override
     public String getDataID() {

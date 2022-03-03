@@ -4,7 +4,6 @@ import com.vicious.viciouslibkit.ViciousLibKit;
 import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.data.DataTypeNotFoundException;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockChunkDataHandler;
-import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockInstance;
 import com.vicious.viciouslibkit.data.provided.netnode.NetChunkDataHandler;
 import com.vicious.viciouslibkit.interfaces.IChunkDataHandler;
 import org.bukkit.Chunk;
@@ -70,9 +69,6 @@ public class PluginChunkData {
         handlers.forEach((cls,h)->{
             h.handleBlockChange(bi,b);
         });
-    }
-    public void removeMultiBlock(MultiBlockInstance mbi) {
-
     }
 
     public void unload(Chunk c) {
