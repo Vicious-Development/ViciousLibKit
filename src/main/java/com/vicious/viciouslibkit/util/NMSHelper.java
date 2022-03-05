@@ -31,9 +31,7 @@ public class NMSHelper {
 
     static {
         try {
-            MethodSearchContext ctx = new MethodSearchContext().accepts().returns(Block)
-                    .after(new MethodSearchContext().returns(void.class).accepts(World,BlockPosition,IBlockData,boolean.class))
-                    .before(new MethodSearchContext().returns(void.class).accepts(GeneratorAccess,BlockPosition,int.class,int.class));
+            MethodSearchContext ctx = new MethodSearchContext().accepts().returns(Block);
             IBlockData$getBlock = DeepReflection.getMethod(IBlockData,ctx);
             ctx = new MethodSearchContext().accepts(World, BlockPosition, EnumDirection, boolean.class).returns(boolean.class);
             BlockPiston$push = DeepReflection.getMethod(BlockPiston,ctx);
