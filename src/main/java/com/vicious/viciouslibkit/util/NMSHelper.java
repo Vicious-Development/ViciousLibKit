@@ -12,7 +12,13 @@ import org.bukkit.block.data.Directional;
 public class NMSHelper {
     //NMS
     public static Class<?> World = DeepReflection.get("World","net.minecraft");
-    public static Class<?> GeneratorAccess = DeepReflection.get("GeneratorAccess","net.minecraft");
+    public static Class<?> WorldServer = DeepReflection.get("WorldServer","net.minecraft");
+    public static Class<?> ServerPlayer = DeepReflection.get("ServerPlayer","net.minecraft");
+    public static Class<?> Packet = DeepReflection.get("Packet","net.minecraft");
+    public static Class<?> ParticleParam = DeepReflection.get("ParticleParam","net.minecraft");
+    public static Class<?> Particle = DeepReflection.get("Particle","net.minecraft");
+    public static Class<?> IRegistry = DeepReflection.get("IRegistry","net.minecraft");
+    public static Class<?> MinecraftKey = DeepReflection.get("MinecraftKey","net.minecraft");
     public static Class<?> BlockPosition = DeepReflection.get("BlockPosition","net.minecraft");
     public static Class<?> Block = DeepReflection.get("Block","net.minecraft");
     public static Class<?> BlockPiston = DeepReflection.get("BlockPiston","net.minecraft");
@@ -25,6 +31,8 @@ public class NMSHelper {
     public static ReflectiveMethod CraftBlock$getPosition;
     public static ReflectiveMethod IBlockData$getBlock;
     public static ReflectiveMethod BlockPiston$push;
+    public static ReflectiveMethod IRegistry$get;
+    public static ReflectiveMethod WorldServer$sendParticles;
     //Fields
     public static ReflectiveField CraftWorld$world = new ReflectiveField("world");
 
@@ -37,6 +45,11 @@ public class NMSHelper {
             BlockPiston$push = DeepReflection.getMethod(BlockPiston,ctx);
             CraftBlock$getNMS = DeepReflection.getMethod(CraftBlock,new MethodSearchContext().name("getNMS"));
             CraftBlock$getPosition = DeepReflection.getMethod(CraftBlock,new MethodSearchContext().name("getPosition"));
+            IRegistry$get = DeepReflection.getMethod(IRegistry,new MethodSearchContext().accepts(MinecraftKey).returns(Object.class).throws());
+            WorldServer$sendParticles = DeepReflection.getMethod(WorldServer,new MethodSearchContext()
+                    .accepts(ServerPlayer,Packet,double.class,double.class,double.class,int.class,double.class,double.class,double.class,double.class,boolean.class)
+                    .returns(boolean.class)
+            );
         } catch (TotalFailureException e) {
             ViciousLibKit.LOGGER.severe(e.getMessage());
             e.printStackTrace();
