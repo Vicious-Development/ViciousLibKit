@@ -45,7 +45,7 @@ public class NMSHelper {
             BlockPiston$push = DeepReflection.getMethod(BlockPiston,ctx);
             CraftBlock$getNMS = DeepReflection.getMethod(CraftBlock,new MethodSearchContext().name("getNMS"));
             CraftBlock$getPosition = DeepReflection.getMethod(CraftBlock,new MethodSearchContext().name("getPosition"));
-            IRegistry$get = DeepReflection.getMethod(IRegistry,new MethodSearchContext().accepts(MinecraftKey).returns(Object.class).throws());
+            IRegistry$get = DeepReflection.getMethod(IRegistry,new MethodSearchContext().accepts(MinecraftKey).returns(Object.class).exceptions());
             WorldServer$sendParticles = DeepReflection.getMethod(WorldServer,new MethodSearchContext()
                     .accepts(ServerPlayer,Packet,double.class,double.class,double.class,int.class,double.class,double.class,double.class,double.class,boolean.class)
                     .returns(boolean.class)
