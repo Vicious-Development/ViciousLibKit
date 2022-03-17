@@ -45,4 +45,12 @@ public class WorldDataDirectory {
     private static Path getChunkdirDoNotCreate(World w, ChunkPos p) {
         return FileUtil.toPath(getWorldViciousDir(w).toAbsolutePath().toString() + "/" + p.x + "_" + p.z);
     }
+
+    public static Path getWorldDirForDataDoNotCreate(World w, String dataID) {
+        return FileUtil.toPath(getWorldViciousDir(w).toAbsolutePath().toString() + "/" + dataID);
+    }
+    public static Path getWorldDirForData(World w, String dataID) {
+        return FileUtil.createDirectoryIfDNE(getWorldViciousDir(w).toAbsolutePath().toString() + "/" + dataID);
+    }
+
 }

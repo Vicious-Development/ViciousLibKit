@@ -2,7 +2,9 @@ package com.vicious.viciouslibkit.util;
 
 import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
 import com.vicious.viciouslib.util.Hashable;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.util.Vector;
 
 import java.util.Objects;
 
@@ -20,6 +22,12 @@ public class ChunkPos {
 
     public static ChunkPos fromBlockPos(SQLVector3i l) {
         return new ChunkPos(l.x >> 4, l.z >> 4);
+    }
+    public static ChunkPos fromBlockPos(Vector l) {
+        return new ChunkPos(l.getBlockX() >> 4, l.getBlockZ() >> 4);
+    }
+    public static ChunkPos fromChunk(Chunk c) {
+        return new ChunkPos(c.getX(), c.getZ());
     }
 
     public ChunkPos add(int x, int z){
