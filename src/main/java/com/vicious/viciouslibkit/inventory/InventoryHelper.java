@@ -37,4 +37,31 @@ public class InventoryHelper {
             }
         }
     }
+    public static int extract(ItemStack stack, Inventory target, boolean ignoreNBT){
+        ItemStack[] contents = target.getContents();
+        int count = stack.getAmount();
+        if(ignoreNBT) {
+            for (int i = 0; i < contents.length; i++) {
+                if (count <= 0) break;
+                if (contents[i] == null) continue;
+                if (contents[i].getType() == stack.getType()) {
+                    int fcount = count - contents[i].getAmount();
+                    contents[i].setAmount(Math.max(0, contents[i].getAmount() - count));
+                    count = fcount;
+                }
+            }
+        }
+        else{
+            for (int i = 0; i < contents.length; i++) {
+                if (count <= 0) break;
+                if (contents[i] == null) continue;
+                if (contents[i].isSimilar(stack)) {
+                    int fcount = count - contents[i].getAmount();
+                    contents[i].setAmount(Math.max(0, contents[i].getAmount() - count));
+                    count = fcount;
+                }
+            }
+        }
+        return count;
+    }
 }

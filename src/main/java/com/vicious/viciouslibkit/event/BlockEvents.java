@@ -56,6 +56,7 @@ public class BlockEvents implements Listener {
             if(b == null) return;
             MultiBlockState state = PluginWorldData.createMultiblockOn(b);
             if(state.count != -1) ev.getPlayer().sendMessage(state.toString());
+            ev.setCancelled(true);
         }
     }
 }
