@@ -20,22 +20,10 @@ public class VLKHooks {
      * Burntime Hooks. Vanilla doesn't cache burntime information so we will.
      * Trust me, whoever coded the vanilla mc furnace tile is an absolute idiot.
      */
-    public static Map<Material, Integer> fuelStats = new EnumMap<>(Material.class);
+    public static Map<Object,Integer> burntimes = (Map<Object, Integer>) NMSHelper.TileEntityFurnace$createFuelTimeMap.invoke(NMSHelper.TileEntityFurnace);
     public static int getBurnTime(ItemStack stack){
-        Material m = stack.getType();
-        Integer ret = fuelStats.get(m);
-        if(ret == null){
-            addFuelFor(stack);
-            ret = fuelStats.get(m);
-        }
-        return ret;
-    }
-    private static void addFuelFor(ItemStack stack) {
-        Object nmsstack = NMSHelper.CraftItemStack$handle.get(stack);
-        if((boolean)NMSHelper.TileEntityFurnace$canUseAsFuel.invoke(NMSHelper.TileEntityFurnace,nmsstack)){
-            fuelStats.put(stack.getType(), (Integer) NMSHelper.TileEntityFurnace$getFuelTime.invoke(NMSHelper.TileEntityFurnace,nmsstack));
-        }
-        else fuelStats.put(stack.getType(),0);
+        //Look how disgusting this code is lmao.
+        return burntimes.getOrDefault(NMSHelper.ItemStack$getItem.invoke(NMSHelper.ItemStack$getItem.invoke(stack)),0);
     }
 }
 

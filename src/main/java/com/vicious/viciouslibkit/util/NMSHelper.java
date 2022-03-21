@@ -12,14 +12,14 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Modifier;
+import java.util.Map;
 
 public class NMSHelper {
     //NMS
     public static Class<?> TileEntityFurnace = DeepReflection.get("TileEntityFurnace","net.minecraft");
+    public static Class<?> ItemStack = DeepReflection.get("ItemStack","net.minecraft");
+    public static Class<?> Item = DeepReflection.get("Item","net.minecraft");
     public static Class<?> World = DeepReflection.get("World","net.minecraft");
-    public static Class<?> WorldServer = DeepReflection.get("WorldServer","net.minecraft");
-    public static Class<?> ServerPlayer = DeepReflection.get("ServerPlayer","net.minecraft");
-    public static Class<?> Packet = DeepReflection.get("Packet","net.minecraft");
     public static Class<?> IRegistry = DeepReflection.get("IRegistry","net.minecraft");
     public static Class<?> MinecraftKey = DeepReflection.get("MinecraftKey","net.minecraft");
     public static Class<?> BlockPosition = DeepReflection.get("BlockPosition","net.minecraft");
@@ -36,9 +36,9 @@ public class NMSHelper {
     public static ReflectiveMethod IBlockData$getBlock;
     public static ReflectiveMethod BlockPiston$push;
     public static ReflectiveMethod IRegistry$get;
-    public static ReflectiveMethod WorldServer$sendParticles;
     public static ReflectiveMethod TileEntityFurnace$canUseAsFuel;
-    public static ReflectiveMethod TileEntityFurnace$getFuelTime;
+    public static ReflectiveMethod TileEntityFurnace$createFuelTimeMap;
+    public static ReflectiveMethod ItemStack$getItem;
     //Fields
     public static ReflectiveField CraftWorld$world = new ReflectiveField("world");
     public static ReflectiveField CraftItemStack$handle = new ReflectiveField("handle");
@@ -53,12 +53,9 @@ public class NMSHelper {
             CraftBlock$getNMS = DeepReflection.getMethod(CraftBlock,new MethodSearchContext().name("getNMS"));
             CraftBlock$getPosition = DeepReflection.getMethod(CraftBlock,new MethodSearchContext().name("getPosition"));
             IRegistry$get = DeepReflection.getMethod(IRegistry,new MethodSearchContext().accepts(MinecraftKey).returns(Object.class).exceptions());
-            WorldServer$sendParticles = DeepReflection.getMethod(WorldServer,new MethodSearchContext()
-                    .accepts(ServerPlayer,Packet,double.class,double.class,double.class,int.class,double.class,double.class,double.class,double.class,boolean.class)
-                    .returns(boolean.class)
-            );
-            TileEntityFurnace$canUseAsFuel = DeepReflection.getMethod(TileEntityFurnace, new MethodSearchContext().returns(boolean.class).accepts(ItemStack.class).exceptions().withAccess(Lists.newArrayList(Modifier::isStatic, Modifier::isPublic)));
-            TileEntityFurnace$getFuelTime = DeepReflection.getMethod(TileEntityFurnace, new MethodSearchContext().returns(int.class).accepts(ItemStack.class).exceptions().withAccess(Lists.newArrayList(Modifier::isStatic, Modifier::isPublic)));
+            TileEntityFurnace$canUseAsFuel = DeepReflection.getMethod(TileEntityFurnace, new MethodSearchContext().returns(boolean.class).accepts(ItemStack).exceptions().withAccess(Lists.newArrayList(Modifier::isStatic, Modifier::isPublic)));
+            TileEntityFurnace$createFuelTimeMap = DeepReflection.getMethod(TileEntityFurnace, new MethodSearchContext().returns(Map.class).accepts().exceptions().withAccess(Lists.newArrayList(Modifier::isStatic, Modifier::isPublic)));
+            ItemStack$getItem = DeepReflection.getMethod(ItemStack, new MethodSearchContext().returns(Item).accepts().exceptions().withAccess(Lists.newArrayList(Modifier::isPublic)));
         } catch (TotalFailureException e) {
             ViciousLibKit.LOGGER.severe(e.getMessage());
             e.printStackTrace();
