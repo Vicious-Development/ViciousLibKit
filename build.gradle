@@ -32,7 +32,7 @@ repositories {
 }
 
 dependencies {
-    compile "com.vicious:viciouslib:1.8.4";
+    compile "com.vicious:viciouslib:1.8.5";
     compile "org.json:json:20211205"
     compileOnly 'org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT'
 }
