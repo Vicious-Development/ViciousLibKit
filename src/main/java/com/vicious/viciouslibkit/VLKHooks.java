@@ -23,7 +23,7 @@ public class VLKHooks {
     public static Map<Object,Integer> burntimes = (Map<Object, Integer>) NMSHelper.TileEntityFurnace$createFuelTimeMap.invoke(NMSHelper.TileEntityFurnace);
     public static int getBurnTime(ItemStack stack){
         //Look how disgusting this code is lmao.
-        return burntimes.getOrDefault(NMSHelper.ItemStack$getItem.invoke(NMSHelper.ItemStack$getItem.invoke(stack)),0);
+        return burntimes.getOrDefault(NMSHelper.ItemStack$getItem.invoke(NMSHelper.CraftItemStack$handle.get(stack)),0);
     }
 }
 
