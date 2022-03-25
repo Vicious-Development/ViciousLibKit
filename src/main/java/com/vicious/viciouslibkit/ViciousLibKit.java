@@ -8,9 +8,12 @@ import com.vicious.viciouslibkit.inventory.wrapper.InventoryEvents;
 import com.vicious.viciouslibkit.inventory.wrapper.InventoryWrapperChunkHandler;
 import com.vicious.viciouslibkit.util.LibKitDirectories;
 import com.vicious.viciouslibkit.util.NMSHelper;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.net.URL;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.logging.Logger;
 
@@ -22,7 +25,7 @@ public final class ViciousLibKit extends JavaPlugin {
     public static Enumeration<URL> jarURL;
     @Override
     public void onEnable() {
-
+        Collections.unmodifiableSet()
         LibKitDirectories.initializePluginDependents();
         INSTANCE=this;
         LOGGER=getLogger();
@@ -35,6 +38,7 @@ public final class ViciousLibKit extends JavaPlugin {
             e.printStackTrace();
             return;
         }
+        new BlockBreakEvent()
         getServer().getPluginManager().registerEvents(new ChunkEvents(), this);
         getServer().getPluginManager().registerEvents(new BlockEvents(), this);
         getServer().getPluginManager().registerEvents(new InventoryEvents(), this);

@@ -1,7 +1,9 @@
 package com.vicious.viciouslibkit.util.map;
 
+import com.vicious.viciouslibkit.item.ItemType;
 import com.vicious.viciouslibkit.item.StackType;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -17,10 +19,11 @@ import java.util.function.Predicate;
  * Items are mapped by their metadata and material, any item of the same mapping will be combined into one stack regardless if the stack exceeds maxstacksize.
  * Use getStacks() to get all stacks following stack size requirements.
  */
-public class ItemStackMap extends HashMap<StackType,ItemStack> {
-    private Map<Material, List<StackType>> metaMap = new HashMap<>();
-    private StackType getStackType(ItemStack stack){
-        List<StackType> stl = metaMap.get(stack.getType());
+public class ItemStackMap extends HashMap<ItemType<?,?>,ItemStack> {
+    private final Map<Material, List<ItemType<?,?>>> metaMap = new HashMap<>();
+    private ItemType<?,?> getItemType(ItemStack stack){
+        NamespacedKey
+        List<ItemType<?,?>> stl = metaMap.get(stack.getType());
         if(stl != null) {
             if (stl.size() == 1) {
                 return stl.get(0);
@@ -32,8 +35,8 @@ public class ItemStackMap extends HashMap<StackType,ItemStack> {
                 }
             }
         }
-        List<StackType> lst = new ArrayList<>();
-        StackType st = new StackType(stack);
+        List<ItemType<?,?>> lst = new ArrayList<>();
+        ItemType<?,?> st = new StackType(stack);
         lst.add(st);
         metaMap.put(stack.getType(),lst);
         return st;
