@@ -8,12 +8,9 @@ import com.vicious.viciouslibkit.inventory.wrapper.InventoryEvents;
 import com.vicious.viciouslibkit.inventory.wrapper.InventoryWrapperChunkHandler;
 import com.vicious.viciouslibkit.util.LibKitDirectories;
 import com.vicious.viciouslibkit.util.NMSHelper;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.net.URL;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.logging.Logger;
 

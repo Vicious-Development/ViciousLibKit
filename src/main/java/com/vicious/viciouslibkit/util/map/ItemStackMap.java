@@ -1,11 +1,9 @@
 package com.vicious.viciouslibkit.util.map;
 
-import com.vicious.viciouslibkit.item.ItemType;
-import jdk.nashorn.internal.runtime.regexp.joni.constants.StackType;
+import com.vicious.viciouslibkit.item.types.ItemType;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 
 import java.util.*;
 

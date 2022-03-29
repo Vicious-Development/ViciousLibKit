@@ -1,4 +1,4 @@
-package com.vicious.viciouslibkit.item;
+package com.vicious.viciouslibkit.item.types.meta;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

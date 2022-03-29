@@ -1,5 +1,9 @@
-package com.vicious.viciouslibkit.item;
+package com.vicious.viciouslibkit.item.types;
 
+import com.vicious.viciouslibkit.item.NotCustomItemException;
+import com.vicious.viciouslibkit.item.types.meta.NamedItem;
+import com.vicious.viciouslibkit.item.types.meta.NamespacedItem;
+import com.vicious.viciouslibkit.item.types.meta.VanillaItem;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;

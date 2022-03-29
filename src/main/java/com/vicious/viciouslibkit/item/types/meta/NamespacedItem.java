@@ -1,21 +1,23 @@
-package com.vicious.viciouslibkit.item;
+package com.vicious.viciouslibkit.item.types.meta;
 
-import com.google.common.collect.HashBiMap;
+import com.vicious.viciouslibkit.item.NotCustomItemException;
+import com.vicious.viciouslibkit.item.types.ItemType;
 import com.vicious.viciouslibkit.util.map.BiMap;
-import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 
 /**
  * For plugins implementing custom namespaced items.
  */
-public class NamespacedItem extends ItemType<Integer, ItemMeta>{
+public class NamespacedItem extends ItemType<Integer, ItemMeta> {
     private static Set<NamespacedKey> knownKeys = new HashSet<>();
     //The integer type of an item is dependent on the order items are registered here. They will NOT remain the same.
     private static BiMap<String,Integer> customItemIntMapping = new BiMap<>();
@@ -23,7 +25,7 @@ public class NamespacedItem extends ItemType<Integer, ItemMeta>{
     //SourceKey differentiates between different item addition plugins. Necessary when items share the same id but are in fact different.
     protected NamespacedKey sourceKey;
 
-    public NamespacedItem(ItemStack stack) throws NotCustomItemException{
+    public NamespacedItem(ItemStack stack) throws NotCustomItemException {
         ItemMeta meta = stack.getItemMeta();
         if(meta == null) throw new NotCustomItemException("The stack MUST have an ItemMeta!");
         String id = null;

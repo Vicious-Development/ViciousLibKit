@@ -9,7 +9,6 @@ import com.vicious.viciouslib.util.reflect.wrapper.ReflectiveMethod;
 import com.vicious.viciouslibkit.ViciousLibKit;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Directional;
-import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Modifier;
 import java.util.Map;

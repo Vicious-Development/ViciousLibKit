@@ -1,5 +1,6 @@
-package com.vicious.viciouslibkit.item;
+package com.vicious.viciouslibkit.item.types.metaless;
 
+import com.vicious.viciouslibkit.item.types.ItemType;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -21,7 +22,7 @@ public class MetalessItem<T> extends ItemType<Material,T> {
 
     @Override
     public boolean isType(ItemType<?, ?> type, boolean ignoreMeta) {
-        return type.type==this.type;
+        return Objects.equals(type.getType(),getType());
     }
 
     @Override

@@ -1,14 +1,9 @@
 package com.vicious.viciouslibkit.util.map;
 
 import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
-import org.bukkit.Location;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
 public class LocationItemMap extends HashMap<SQLVector3i,ItemStackMap> {
     /**

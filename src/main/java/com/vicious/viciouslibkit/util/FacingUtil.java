@@ -2,7 +2,6 @@ package com.vicious.viciouslibkit.util;
 
 import org.bukkit.Axis;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.type.Stairs;
 
 public class FacingUtil {
     public static BlockFace getClockwise90(BlockFace facing) {

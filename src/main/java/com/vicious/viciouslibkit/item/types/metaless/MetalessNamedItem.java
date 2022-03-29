@@ -1,6 +1,6 @@
-package com.vicious.viciouslibkit.item;
+package com.vicious.viciouslibkit.item.types.metaless;
 
-import javafx.scene.paint.Material;
+import com.vicious.viciouslibkit.item.types.ItemType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
@@ -15,7 +15,7 @@ public class MetalessNamedItem extends MetalessItem<String>{
 
     @Override
     public boolean isType(ItemType<?, ?> type, boolean ignoreMeta) {
-        return Objects.equals(type.type,this.type) && Objects.equals(type.meta,this.meta);
+        return Objects.equals(type.getType(),this.type) && Objects.equals(type.getType(),this.meta);
     }
 
     @Override

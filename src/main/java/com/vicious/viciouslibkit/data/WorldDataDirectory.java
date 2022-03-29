@@ -9,7 +9,9 @@ import org.bukkit.World;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Manages all worldstorage dependent and persistent data for plugins.

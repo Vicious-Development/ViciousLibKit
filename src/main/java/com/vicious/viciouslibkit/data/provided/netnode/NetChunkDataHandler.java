@@ -3,11 +3,11 @@ package com.vicious.viciouslibkit.data.provided.netnode;
 import com.vicious.viciouslibkit.ViciousLibKit;
 import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.interfaces.IChunkDataHandler;
+import com.vicious.viciouslibkit.services.netnode.NNReconstructor;
+import com.vicious.viciouslibkit.services.netnode.NetNodeService;
 import com.vicious.viciouslibkit.util.ChunkPos;
 import com.vicious.viciouslibkit.util.LibKitUtil;
 import com.vicious.viciouslibkit.util.map.PositionMap;
-import com.vicious.viciouslibkit.services.netnode.NNReconstructor;
-import com.vicious.viciouslibkit.services.netnode.NetNodeService;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 

@@ -1,13 +1,13 @@
 package com.vicious.viciouslibkit.util.map;
 
-import com.vicious.viciouslibkit.item.ItemType;
-import com.vicious.viciouslibkit.item.MetalessItem;
-import jdk.nashorn.internal.runtime.regexp.joni.constants.StackType;
-import org.bukkit.Material;
+import com.vicious.viciouslibkit.item.types.metaless.MetalessItem;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Acts as an ItemStackMap ignoring NBT.
