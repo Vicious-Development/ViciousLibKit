@@ -25,7 +25,6 @@ public final class ViciousLibKit extends JavaPlugin {
     public static Enumeration<URL> jarURL;
     @Override
     public void onEnable() {
-        Collections.unmodifiableSet()
         LibKitDirectories.initializePluginDependents();
         INSTANCE=this;
         LOGGER=getLogger();
@@ -38,7 +37,6 @@ public final class ViciousLibKit extends JavaPlugin {
             e.printStackTrace();
             return;
         }
-        new BlockBreakEvent()
         getServer().getPluginManager().registerEvents(new ChunkEvents(), this);
         getServer().getPluginManager().registerEvents(new BlockEvents(), this);
         getServer().getPluginManager().registerEvents(new InventoryEvents(), this);

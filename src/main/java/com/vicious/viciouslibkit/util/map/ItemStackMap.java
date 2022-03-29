@@ -1,18 +1,13 @@
 package com.vicious.viciouslibkit.util.map;
 
 import com.vicious.viciouslibkit.item.ItemType;
-import com.vicious.viciouslibkit.item.StackType;
+import jdk.nashorn.internal.runtime.regexp.joni.constants.StackType;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.checkerframework.checker.units.qual.A;
-import org.checkerframework.checker.units.qual.K;
+import org.bukkit.inventory.meta.Damageable;
 
 import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.Predicate;
 
 /**
  * I found myself using a Map Material,ItemStack so much that I decided to create a version of a hashmap specifically for ItemStacks.
@@ -22,34 +17,33 @@ import java.util.function.Predicate;
 public class ItemStackMap extends HashMap<ItemType<?,?>,ItemStack> {
     private final Map<Material, List<ItemType<?,?>>> metaMap = new HashMap<>();
     private ItemType<?,?> getItemType(ItemStack stack){
-        NamespacedKey
         List<ItemType<?,?>> stl = metaMap.get(stack.getType());
         if(stl != null) {
             if (stl.size() == 1) {
                 return stl.get(0);
             } else if (stl.size() > 1) {
-                for (StackType st : stl) {
-                    if (st.isType(stack)) {
+                for (ItemType<?,?> st : stl) {
+                    if (st.isType(ItemType.fromItemStack(stack),false)) {
                         return st;
                     }
                 }
             }
         }
         List<ItemType<?,?>> lst = new ArrayList<>();
-        ItemType<?,?> st = new StackType(stack);
+        ItemType<?,?> st = ItemType.fromItemStack(stack);
         lst.add(st);
         metaMap.put(stack.getType(),lst);
         return st;
     }
     public ItemStack get(ItemStack basis){
-        return get(getStackType(basis));
+        return get(getItemType(basis));
     }
     /**
      * @param stack the stack to add.
      * @return if the Material was already present.
      */
     public boolean add(ItemStack stack){
-        StackType mat = getStackType(stack);
+        ItemType<?,?> mat = getItemType(stack);
         if(putIfAbsent(mat,stack.clone()) != null){
             ItemStack mappedStack = get(mat);
             mappedStack.setAmount(mappedStack.getAmount()+stack.getAmount());
@@ -65,7 +59,7 @@ public class ItemStackMap extends HashMap<ItemType<?,?>,ItemStack> {
      * @return
      */
     public boolean reduceBy(ItemStack stack){
-        StackType mat = getStackType(stack);
+        ItemType<?,?> mat = getItemType(stack);
         ItemStack mappedStack = get(mat);
         if(mappedStack == null) return false;
         mappedStack.setAmount(mappedStack.getAmount()-stack.getAmount());
@@ -125,7 +119,7 @@ public class ItemStackMap extends HashMap<ItemType<?,?>,ItemStack> {
     public boolean hasAll(List<ItemStack> stacks){
         //Map to unify stacks.
         ItemStackMap mapped = new ItemStackMap().addAll(stacks);
-        for (StackType k : mapped.keySet()) {
+        for (ItemType<?,?> k : mapped.keySet()) {
             ItemStack mapStack = get(k);
             if (mapStack == null) return false;
             ItemStack expected = mapped.get(k);
@@ -134,5 +128,13 @@ public class ItemStackMap extends HashMap<ItemType<?,?>,ItemStack> {
         }
         //Mapped should be empty by the end of this.
         return mapped.size() == 0;
+    }
+
+    /**
+     * Warning this is a lossy process, the rough stack map stores items without NBT data. Do not do this unless you intend to use it as a data source rather than an item container.
+     * @return
+     */
+    public RoughItemStackMap asRoughMap(){
+        return new RoughItemStackMap().addAll(values());
     }
 }

@@ -1,6 +1,8 @@
 package com.vicious.viciouslibkit.util.map;
 
-import com.vicious.viciouslibkit.item.StackType;
+import com.vicious.viciouslibkit.item.ItemType;
+import com.vicious.viciouslibkit.item.MetalessItem;
+import jdk.nashorn.internal.runtime.regexp.joni.constants.StackType;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
@@ -10,12 +12,7 @@ import java.util.*;
 /**
  * Acts as an ItemStackMap ignoring NBT.
  */
-public class RoughItemStackMap extends EnumMap<Material,ItemStack> {
-    private Map<Material, List<StackType>> metaMap = new HashMap<>();
-
-    public RoughItemStackMap() {
-        super(Material.class);
-    }
+public class RoughItemStackMap extends HashMap<MetalessItem<?>,ItemStack> {
     public ItemStack get(ItemStack basis){
         return get(basis.getType());
     }
@@ -24,7 +21,7 @@ public class RoughItemStackMap extends EnumMap<Material,ItemStack> {
      * @return if the Material was already present.
      */
     public boolean add(ItemStack stack){
-        Material mat = stack.getType();
+        MetalessItem<?> mat = MetalessItem.fromItemStack(stack);
         if(putIfAbsent(mat,stack.clone()) != null){
             ItemStack mappedStack = get(mat);
             mappedStack.setAmount(mappedStack.getAmount()+stack.getAmount());
@@ -40,7 +37,7 @@ public class RoughItemStackMap extends EnumMap<Material,ItemStack> {
      * @return
      */
     public boolean reduceBy(ItemStack stack){
-        Material mat = stack.getType();
+        MetalessItem<?> mat = MetalessItem.fromItemStack(stack);
         ItemStack mappedStack = get(mat);
         if(mappedStack == null) return false;
         mappedStack.setAmount(mappedStack.getAmount()-stack.getAmount());
@@ -100,7 +97,7 @@ public class RoughItemStackMap extends EnumMap<Material,ItemStack> {
     public boolean hasAll(List<ItemStack> stacks){
         //Map to unify stacks.
         RoughItemStackMap mapped = new RoughItemStackMap().addAll(stacks);
-        for (Material k : mapped.keySet()) {
+        for (MetalessItem<?> k : mapped.keySet()) {
             ItemStack mapStack = get(k);
             if (mapStack == null) return false;
             ItemStack expected = mapped.get(k);
@@ -109,5 +106,14 @@ public class RoughItemStackMap extends EnumMap<Material,ItemStack> {
         }
         //Mapped should be empty by the end of this.
         return mapped.size() == 0;
+    }
+
+    /**
+     * WARNING THIS IS A LOSSY PROCESS!
+     * Converting between rough and fine itemstackmaps eliminates NBT regardless and the resulting fine map will still act just like the rough map until new items are added.
+     * @return
+     */
+    public ItemStackMap asFineMap(){
+        return new ItemStackMap().addAll(values());
     }
 }

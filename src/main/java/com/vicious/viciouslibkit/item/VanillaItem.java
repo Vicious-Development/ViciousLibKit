@@ -1,6 +1,7 @@
 package com.vicious.viciouslibkit.item;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
@@ -13,5 +14,8 @@ public class VanillaItem extends ItemType<Material, ItemMeta>{
 
     public VanillaItem(Material type, ItemMeta meta) {
         super(type, meta);
+    }
+    public VanillaItem(ItemStack stack){
+        this(stack.getType(),stack.getItemMeta());
     }
 }
