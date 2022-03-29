@@ -1,7 +1,6 @@
 package com.vicious.viciouslibkit.util;
 
 import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
-import com.vicious.viciouslib.util.Hashable;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;

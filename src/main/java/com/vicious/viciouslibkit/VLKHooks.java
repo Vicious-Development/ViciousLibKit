@@ -1,14 +1,8 @@
 package com.vicious.viciouslibkit;
 
-import com.vicious.viciouslib.util.reflect.deep.DeepReflection;
-import com.vicious.viciouslib.util.reflect.deep.MethodSearchContext;
-import com.vicious.viciouslib.util.reflect.deep.TotalFailureException;
-import com.vicious.viciouslib.util.reflect.wrapper.ReflectiveMethod;
 import com.vicious.viciouslibkit.util.NMSHelper;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.EnumMap;
 import java.util.Map;
 
 /**
