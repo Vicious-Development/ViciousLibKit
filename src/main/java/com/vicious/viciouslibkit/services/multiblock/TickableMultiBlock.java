@@ -20,8 +20,8 @@ import java.util.UUID;
  */
 public abstract class TickableMultiBlock extends MultiBlockInstance implements ITickable {
     private boolean isTicking = false;
-    public TickableMultiBlock(Class<? extends MultiBlockInstance> mbType, World w, Location l, BlockFace dir, boolean flipped, UUID id) {
-        super(mbType, w, l, dir, flipped, id);
+    public TickableMultiBlock(Class<? extends MultiBlockInstance> mbType, World w, Location l, BlockFace dir, boolean flipped, boolean flippedVertical, UUID id) {
+        super(mbType, w, l, dir, flipped, flippedVertical, id);
     }
 
     public TickableMultiBlock(Class<? extends MultiBlockInstance> type, World w, UUID id, ChunkPos cpos) {

@@ -8,6 +8,7 @@ public class MultiBlockState {
     private String message;
     public BlockFace orientation;
     public boolean flipped = false;
+    public boolean isUpsideDown = false;
     public MultiBlockState(State state, String message, long count){
         this.state=state;
         this.message=message;
@@ -19,6 +20,10 @@ public class MultiBlockState {
     }
     public MultiBlockState flip(boolean b){
         flipped=b;
+        return this;
+    }
+    public MultiBlockState isUpsideDown(boolean b){
+        isUpsideDown=b;
         return this;
     }
     public String toString(){

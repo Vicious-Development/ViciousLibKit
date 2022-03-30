@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class BlockTemplate {
     private ArrayList<ArrayList<ArrayList<BlockInstance>>> instanceList = new ArrayList<>();
+    public boolean canBeUpsideDown;
     public int maxX = 0;
     public int maxY = 0;
     public int maxZ = 0;
@@ -146,11 +147,19 @@ public class BlockTemplate {
             return rotate180();
         }
     }
+    public BlockTemplate finish(int x, int y, int z, boolean canBeUpsideDown){
+        this.startPos = new SQLVector3i(x,y,z);
+        this.canBeUpsideDown=canBeUpsideDown;
+        return this;
+    }
     public BlockTemplate finish(int x, int y, int z){
         this.startPos = new SQLVector3i(x,y,z);
         return this;
     }
     public String allOrientations(){
+        return allOrientationsDownsideUp() + " \nUPSIDE DOWN: " + allOrientationsUpsideDown();
+    }
+    public String allOrientationsDownsideUp(){
         String s = "";
         s += "\nNORTH";
         s += rotate(BlockFace.NORTH);
@@ -168,6 +177,27 @@ public class BlockTemplate {
         s += rotate(BlockFace.WEST);
         s += "\nWEST FLIPPED";
         s += rotate(BlockFace.WEST).flipX();
+        return s;
+    }
+    public String allOrientationsUpsideDown(){
+        BlockTemplate t = flipY();
+        String s = "";
+        s += "\nUPSIDE DOWN NORTH";
+        s += t.rotate(BlockFace.NORTH);
+        s += "\nUPSIDE DOWN NORTH FLIPPED";
+        s += t.rotate(BlockFace.NORTH).flipX();
+        s += "\nUPSIDE DOWN SOUTH";
+        s += t.rotate(BlockFace.SOUTH);
+        s += "\nUPSIDE DOWN SOUTH FLIPPED";
+        s += t.rotate(BlockFace.SOUTH).flipX();
+        s += "\nUPSIDE DOWN EAST";
+        s += t.rotate(BlockFace.EAST);
+        s += "\nUPSIDE DOWN EAST FLIPPED";
+        s += t.rotate(BlockFace.EAST).flipX();
+        s += "\nUPSIDE DOWN WEST";
+        s += t.rotate(BlockFace.WEST);
+        s += "\nUPSIDE DOWN WEST FLIPPED";
+        s += t.rotate(BlockFace.WEST).flipX();
         return s;
     }
     public String toString(){
@@ -215,6 +245,22 @@ public class BlockTemplate {
             template.y();
         }
         template.startPos = new SQLVector3i(-startPos.x+maxX,startPos.y,startPos.z);
+        return template;
+    }
+    public BlockTemplate flipY(){
+        BlockTemplate template = BlockTemplate.start();
+        for(int y = maxY; y >= 0; y--){
+            for(int z = 0; z <= maxZ; z++){
+                for (int x = 0; x >= maxX; x++){
+                    BlockInstance i = get(x,y,z);
+                    if(i != null) template.x(i.flipY());
+                    else template.x(i);
+                }
+                template.z();
+            }
+            template.y();
+        }
+        template.startPos = new SQLVector3i(startPos.x,-startPos.y+maxY,startPos.z);
         return template;
     }
 }

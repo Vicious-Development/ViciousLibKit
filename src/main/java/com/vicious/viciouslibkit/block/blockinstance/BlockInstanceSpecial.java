@@ -39,6 +39,10 @@ public class BlockInstanceSpecial extends BlockInstance {
         return this;
     }
 
+    public BlockInstance flipY() {
+        return this;
+    }
+
     public BlockInstance orientation(Axis axis) {
         return this;
     }

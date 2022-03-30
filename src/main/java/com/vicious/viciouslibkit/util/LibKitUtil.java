@@ -65,8 +65,17 @@ public class LibKitUtil {
         vec = rotate(vec,face);
         return vec;
     }
+    public static SQLVector3i orientate(SQLVector3i vec, BlockFace face, boolean flipped, boolean upsidedown){
+        if(flipped) vec = flipX(vec);
+        if(upsidedown) vec = flipY(vec);
+        vec = rotate(vec,face);
+        return vec;
+    }
     public static SQLVector3i flipX(SQLVector3i vec){
         return new SQLVector3i(-vec.x, vec.y, vec.z);
+    }
+    public static SQLVector3i flipY(SQLVector3i vec){
+        return new SQLVector3i(vec.x, -vec.y, vec.z);
     }
 
 }

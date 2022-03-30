@@ -80,7 +80,7 @@ public class PluginWorldData {
         if(dh.checkExists(v)) return new MultiBlockState(MultiBlockState.State.VALID," Already exists.",0);
         MultiBlockState isValid = MultiBlockInstance.checkValid(w,l,cls);
         if(!isValid.isValid()) return isValid;
-        dh.addMultiblock(MultiBlockService.registry.get(cls).construct(cls,w,l,isValid.orientation,isValid.flipped,UUID.randomUUID()));
+        dh.addMultiblock(MultiBlockService.registry.get(cls).construct(cls,w,l,isValid.orientation,isValid.flipped,isValid.isUpsideDown,UUID.randomUUID()));
         return isValid;
     }
 

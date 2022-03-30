@@ -10,6 +10,7 @@ import com.vicious.viciouslibkit.services.multiblock.MultiBlockBoundingBox;
 import com.vicious.viciouslibkit.services.multiblock.MultiBlockService;
 import com.vicious.viciouslibkit.services.multiblock.MultiBlockState;
 import com.vicious.viciouslibkit.util.ChunkPos;
+import com.vicious.viciouslibkit.util.LibKitUtil;
 import com.vicious.viciouslibkit.util.WorldUtil;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -31,19 +32,22 @@ public class MultiBlockInstance extends JSONTrackable<MultiBlockInstance> {
     public TrackableObject<SQLVector3i> xyz = add(new TrackableObject<>("p",()->new SQLVector3i(0,0,0),this));
     public TrackableEnum<BlockFace> facing = add(new TrackableEnum<>("f",()->BlockFace.NORTH,this));
     public TrackableObject<Boolean> flipped = add(new TrackableObject<>("d",()->false,this));
+    public TrackableObject<Boolean> upsideDown = add(new TrackableObject<>("o",()->false,this));
     public MultiBlockBoundingBox box;
     protected BlockTemplate validTemplate;
     public final UUID ID;
 
-    public MultiBlockInstance(Class<? extends MultiBlockInstance> mbType, World w, Location l, BlockFace dir, boolean flipped, UUID id) {
+    public MultiBlockInstance(Class<? extends MultiBlockInstance> mbType, World w, Location l, BlockFace dir, boolean flipped, boolean flippedVertical, UUID id) {
         super(MultiBlockService.getMBPath(w,l,mbType,id));
         type = mbType;
         world = w;
         xyz.setWithoutUpdate(new SQLVector3i(l.getBlockX(), l.getBlockY(), l.getBlockZ()));
         facing.setWithoutUpdate(dir);
         this.flipped.setWithoutUpdate(flipped);
+        this.upsideDown.setWithoutUpdate(flippedVertical);
         validTemplate=templates.get(type).rotate(dir);
         if(flipped) validTemplate=validTemplate.flipX();
+        if(flippedVertical) validTemplate=validTemplate.flipY();
         this.ID =id;
     }
     public MultiBlockInstance(Class<? extends MultiBlockInstance> type, World w, UUID id, ChunkPos cpos){
@@ -55,12 +59,17 @@ public class MultiBlockInstance extends JSONTrackable<MultiBlockInstance> {
     public void initValidTemplate(){
         validTemplate=templates.get(type).rotate(this.facing.value());
         if(this.flipped.value()) validTemplate=validTemplate.flipX();
+        if(this.upsideDown.value()) validTemplate=validTemplate.flipY();
     }
 
     @Override
     public void onInitialization() {
         super.onInitialization();
-        if(validTemplate == null) validTemplate = templates.get(type).rotate(facing.value());
+        if(validTemplate == null) {
+            validTemplate = templates.get(type).rotate(facing.value());
+            if(flipped.value()) validTemplate=validTemplate.flipX();
+            if(upsideDown.value()) validTemplate=validTemplate.flipY();
+        }
     }
 
     public MultiBlockInstance setBox(MultiBlockBoundingBox box) {
@@ -108,13 +117,18 @@ public class MultiBlockInstance extends JSONTrackable<MultiBlockInstance> {
      *
      */
 
+    public static MultiBlockState checkValid(World w, Location startPos, Class<?> type){
+        BlockTemplate blocks = templates.get(type);
+        MultiBlockState state = checkValid(w,startPos,blocks);
+        if(!state.isValid() && !blocks.canBeUpsideDown) return state;
+        else return bestCase(state, checkValid(w,startPos,blocks.flipY()).isUpsideDown(true));
+    }
     /**
      * How this works:
      * Checks orientation in every facing orientation : NORTH,SOUTH,EAST,WEST
      * Returns the orientation with the most blocks correct.
      */
-    public static MultiBlockState checkValid(World w, Location startPos, Class<?> type){
-        BlockTemplate blocks = templates.get(type);
+    public static MultiBlockState checkValid(World w, Location startPos, BlockTemplate blocks){
         //NORTH ORIENTATION
         BlockFace orientation = BlockFace.NORTH;
         MultiBlockState state = checkValid(w,startPos,blocks,orientation);
@@ -200,5 +214,21 @@ public class MultiBlockInstance extends JSONTrackable<MultiBlockInstance> {
                 }
             }
         }
+    }
+
+    /**
+     * All multiblock structures can be rotated, flipped, etc, This relativizes a vector to those parameters.
+     * The default orientation is NORTH-NOTFLIPPED-DOWNSIDEUP.
+     * Note the vector should be the DISTANCE from the multiblock position to be usable.
+     */
+    public SQLVector3i relativize(SQLVector3i vec){
+        return LibKitUtil.orientate(vec,facing.value(),flipped.value(), upsideDown.value());
+    }
+
+    /**
+     * Returns the final in game position for the location distancevector away from the multiblock position.
+     */
+    public SQLVector3i getRelativePosition(SQLVector3i distanceVector){
+        return xyz.value().add(LibKitUtil.orientate(distanceVector,facing.value(),flipped.value(), upsideDown.value()));
     }
 }

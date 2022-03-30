@@ -1,4 +1,4 @@
-package com.vicious.viciouslibkit;
+package com.vicious.viciouslibkit.util;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,6 +5,7 @@ import org.bukkit.block.Block;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class BlockInstanceMultiple extends BlockInstance{
     private List<BlockInstance> instances = new ArrayList<>();
@@ -39,6 +40,22 @@ public class BlockInstanceMultiple extends BlockInstance{
         newi.instances=instancesnew;
         return newi;
     }
+
+    @Override
+    public BlockInstance flipY() {
+        List<BlockInstance> instancesnew = new ArrayList<>();
+        for (BlockInstance instance : instances) {
+            instancesnew.add(instance.flipY());
+        }
+        BlockInstanceMultiple newi = new BlockInstanceMultiple();
+        newi.instances=instancesnew;
+        return newi;
+    }
+    public BlockInstanceMultiple forEach(Consumer<BlockInstance> consumer){
+        instances.forEach(consumer);
+        return this;
+    }
+
     public String toString(){
         return "MultipleBInstances: " + instances.toString();
     }

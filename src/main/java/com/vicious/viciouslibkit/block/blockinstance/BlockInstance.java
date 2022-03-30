@@ -132,4 +132,13 @@ public class BlockInstance {
     public boolean isAir() {
         return material == Material.AIR;
     }
+
+    public BlockInstance flipY() {
+        return new BlockInstance(material)
+                .orientation(axis)
+                .facing(FacingUtil.flipY(facing))
+                .slabType(FacingUtil.flipSlab(slabType))
+                .vOrientation(FacingUtil.flipY(verticalOrientation))
+                .waterLogged(waterLogged);
+    }
 }
