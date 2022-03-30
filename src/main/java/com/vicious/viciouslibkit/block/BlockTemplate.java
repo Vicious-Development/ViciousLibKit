@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class BlockTemplate {
     private ArrayList<ArrayList<ArrayList<BlockInstance>>> instanceList = new ArrayList<>();
-    public boolean canBeUpsideDown;
+    public boolean canBeUpsideDown = false;
     public int maxX = 0;
     public int maxY = 0;
     public int maxZ = 0;
