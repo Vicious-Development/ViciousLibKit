@@ -8,6 +8,8 @@ import com.vicious.viciouslibkit.inventory.wrapper.InventoryEvents;
 import com.vicious.viciouslibkit.inventory.wrapper.InventoryWrapperChunkHandler;
 import com.vicious.viciouslibkit.util.LibKitDirectories;
 import com.vicious.viciouslibkit.util.NMSHelper;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.net.URL;
@@ -38,9 +40,6 @@ public final class ViciousLibKit extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BlockEvents(), this);
         getServer().getPluginManager().registerEvents(new InventoryEvents(), this);
         PluginChunkData.registerDataType(InventoryWrapperChunkHandler.class, InventoryWrapperChunkHandler::new);
-
-        // Plugin startup logic
-
     }
 
     @Override
