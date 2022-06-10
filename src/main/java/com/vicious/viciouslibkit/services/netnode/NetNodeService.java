@@ -5,7 +5,7 @@ import com.vicious.viciouslibkit.ViciousLibKit;
 import com.vicious.viciouslibkit.data.WorldDataDirectory;
 import com.vicious.viciouslibkit.data.provided.netnode.NetChunkDataHandler;
 import com.vicious.viciouslibkit.data.provided.netnode.NetNode;
-import com.vicious.viciouslibkit.util.ChunkPos;
+import com.vicious.viciouslibkit.util.vector.ChunkPos;
 import com.vicious.viciouslibkit.util.map.BiMap;
 import com.vicious.viciouslibkit.util.map.DualKeyedMap;
 import org.bukkit.Location;

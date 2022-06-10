@@ -1,4 +1,4 @@
-package com.vicious.viciouslibkit.util;
+package com.vicious.viciouslibkit.util.vector;
 
 import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
 import org.bukkit.Chunk;

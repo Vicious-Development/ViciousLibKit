@@ -2,7 +2,7 @@ package com.vicious.viciouslibkit.data;
 
 import com.vicious.viciouslib.util.FileUtil;
 import com.vicious.viciouslibkit.data.worldstorage.PluginChunkData;
-import com.vicious.viciouslibkit.util.ChunkPos;
+import com.vicious.viciouslibkit.util.vector.ChunkPos;
 import com.vicious.viciouslibkit.util.LibKitDirectories;
 import org.bukkit.Location;
 import org.bukkit.World;

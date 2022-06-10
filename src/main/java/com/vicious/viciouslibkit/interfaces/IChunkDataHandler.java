@@ -2,7 +2,7 @@ package com.vicious.viciouslibkit.interfaces;
 
 import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.data.WorldDataDirectory;
-import com.vicious.viciouslibkit.util.ChunkPos;
+import com.vicious.viciouslibkit.util.vector.ChunkPos;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 

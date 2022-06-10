@@ -4,7 +4,7 @@ import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockChunkDataHan
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockInstance;
 import com.vicious.viciouslibkit.event.Ticker;
 import com.vicious.viciouslibkit.interfaces.ITickable;
-import com.vicious.viciouslibkit.util.ChunkPos;
+import com.vicious.viciouslibkit.util.vector.ChunkPos;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;

@@ -7,7 +7,7 @@ import com.vicious.viciouslibkit.data.WorldDataDirectory;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockChunkDataHandler;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockInstance;
 import com.vicious.viciouslibkit.data.worldstorage.PluginWorldData;
-import com.vicious.viciouslibkit.util.ChunkPos;
+import com.vicious.viciouslibkit.util.vector.ChunkPos;
 import com.vicious.viciouslibkit.util.map.BiMap;
 import org.bukkit.Location;
 import org.bukkit.Material;

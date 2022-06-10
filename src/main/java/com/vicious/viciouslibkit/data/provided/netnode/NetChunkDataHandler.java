@@ -5,7 +5,7 @@ import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.interfaces.IChunkDataHandler;
 import com.vicious.viciouslibkit.services.netnode.NNReconstructor;
 import com.vicious.viciouslibkit.services.netnode.NetNodeService;
-import com.vicious.viciouslibkit.util.ChunkPos;
+import com.vicious.viciouslibkit.util.vector.ChunkPos;
 import com.vicious.viciouslibkit.util.LibKitUtil;
 import com.vicious.viciouslibkit.util.map.PositionMap;
 import org.bukkit.Chunk;

@@ -1,7 +1,7 @@
 package com.vicious.viciouslibkit.services.multiblock;
 
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockInstance;
-import com.vicious.viciouslibkit.util.ChunkPos;
+import com.vicious.viciouslibkit.util.vector.ChunkPos;
 import org.bukkit.World;
 
 import java.util.UUID;

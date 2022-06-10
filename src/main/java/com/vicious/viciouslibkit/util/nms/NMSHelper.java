@@ -1,4 +1,4 @@
-package com.vicious.viciouslibkit.util;
+package com.vicious.viciouslibkit.util.nms;
 
 import com.google.common.collect.Lists;
 import com.vicious.viciouslib.util.reflect.deep.DeepReflection;
@@ -10,10 +10,13 @@ import com.vicious.viciouslibkit.ViciousLibKit;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Directional;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Map;
+import java.util.function.Function;
 
 public class NMSHelper {
+
     //NMS
     public static Class<?> TileEntityFurnace = DeepReflection.get("TileEntityFurnace","net.minecraft");
     public static Class<?> ItemStack = DeepReflection.get("ItemStack","net.minecraft");
@@ -26,9 +29,12 @@ public class NMSHelper {
     public static Class<?> BlockPiston = DeepReflection.get("BlockPiston","net.minecraft");
     public static Class<?> IBlockData = DeepReflection.get("IBlockData","net.minecraft");
     public static Class EnumDirection = DeepReflection.get("EnumDirection","net.minecraft");
+    public static Class<?> TileEntityComparator = DeepReflection.get("TileEntityComparator","net.minecraft");
     //BUKKIT
     public static Class<?> CraftBlock = DeepReflection.get("CraftBlock","org.bukkit");
     public static Class<?> CraftItemStack = DeepReflection.get("CraftItemStack","org.bukkit");
+    public static Class<?> CraftBlockEntityState = DeepReflection.get("CraftBlockEntityState","org.bukkit");
+    public static ReflectiveMethod TileEntityComparator$setOutputSignal;
     //Methods
     public static ReflectiveMethod CraftBlock$getNMS;
     public static ReflectiveMethod CraftBlock$getPosition;
@@ -38,10 +44,13 @@ public class NMSHelper {
     public static ReflectiveMethod TileEntityFurnace$canUseAsFuel;
     public static ReflectiveMethod TileEntityFurnace$createFuelTimeMap;
     public static ReflectiveMethod ItemStack$getItem;
+    public static ReflectiveMethod CraftBlockEntity$refreshSnapshot;
+    public static ReflectiveMethod BlockPiston$checkIfExtend;
+
     //Fields
     public static ReflectiveField CraftWorld$world = new ReflectiveField("world");
     public static ReflectiveField CraftItemStack$handle = new ReflectiveField("handle");
-
+    public static ReflectiveField CraftBlockEntity$tileEntity = new ReflectiveField("tileEntity");
 
     static {
         try {
@@ -55,16 +64,35 @@ public class NMSHelper {
             TileEntityFurnace$canUseAsFuel = DeepReflection.getMethod(TileEntityFurnace, new MethodSearchContext().returns(boolean.class).accepts(ItemStack).exceptions().withAccess(Lists.newArrayList(Modifier::isStatic, Modifier::isPublic)));
             TileEntityFurnace$createFuelTimeMap = DeepReflection.getMethod(TileEntityFurnace, new MethodSearchContext().returns(Map.class).accepts().exceptions().withAccess(Lists.newArrayList(Modifier::isStatic, Modifier::isPublic)));
             ItemStack$getItem = DeepReflection.getMethod(ItemStack, new MethodSearchContext().returns(Item).accepts().exceptions().withAccess(Lists.newArrayList(Modifier::isPublic)));
+            CraftBlockEntity$refreshSnapshot = DeepReflection.getMethod(CraftBlockEntityState,new MethodSearchContext().name("refreshSnapshot"));
+            TileEntityComparator$setOutputSignal = DeepReflection.getMethod(TileEntityComparator,new MethodSearchContext().accepts(int.class).returns(void.class).exceptions());
+            BlockPiston$checkIfExtend = DeepReflection.getMethod(NMSHelper.BlockPiston, new MethodSearchContext().accepts(NMSHelper.World,NMSHelper.BlockPosition,NMSHelper.IBlockData));
+
         } catch (TotalFailureException e) {
             ViciousLibKit.LOGGER.severe(e.getMessage());
             e.printStackTrace();
         }
     }
 
-    public static void setExtended(Block piston, boolean extended) throws Exception {
+    public static void setExtended(Block piston, boolean extended) {
         Object nmsblockdata = CraftBlock$getNMS.invoke(piston);
         Object nmsblock = IBlockData$getBlock.invoke(nmsblockdata);
         Enum<?> direction = Enum.valueOf(EnumDirection,((Directional) piston.getBlockData()).getFacing().name());
         BlockPiston$push.invoke(nmsblock,CraftWorld$world.get(piston.getWorld()),CraftBlock$getPosition.invoke(piston),direction,extended);
+    }
+    public static void updatePiston(Block pistonBase, org.bukkit.World world) {
+        Object nmsblockdata = NMSHelper.CraftBlock$getNMS.invoke(pistonBase);
+        Object nmsblock = NMSHelper.IBlockData$getBlock.invoke(nmsblockdata);
+        Object nmsworld = NMSHelper.CraftWorld$world.get(world);
+        Object nmsblockposition = NMSHelper.CraftBlock$getPosition.invoke(pistonBase);
+        BlockPiston$checkIfExtend.invoke(nmsblock,nmsworld, nmsblockposition, nmsblockdata);
+    }
+
+    public static <T> T forAllFields(Class<?> target, Function<Field,T> func) throws TotalFailureException {
+        for (Field declaredField : target.getDeclaredFields()) {
+            T ret = func.apply(declaredField);
+            if(ret != null) return ret;
+        }
+        throw new TotalFailureException("No object found to return using a custom search function.");
     }
 }

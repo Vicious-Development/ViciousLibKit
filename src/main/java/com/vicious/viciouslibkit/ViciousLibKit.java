@@ -7,9 +7,7 @@ import com.vicious.viciouslibkit.event.ChunkEvents;
 import com.vicious.viciouslibkit.inventory.wrapper.InventoryEvents;
 import com.vicious.viciouslibkit.inventory.wrapper.InventoryWrapperChunkHandler;
 import com.vicious.viciouslibkit.util.LibKitDirectories;
-import com.vicious.viciouslibkit.util.NMSHelper;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginDescriptionFile;
+import com.vicious.viciouslibkit.util.nms.NMSHelper;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.net.URL;

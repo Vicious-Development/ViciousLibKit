@@ -5,7 +5,7 @@ import com.vicious.viciouslib.database.tracking.JSONTrackable;
 import com.vicious.viciouslib.database.tracking.values.TrackableObject;
 import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.services.netnode.NetNodeService;
-import com.vicious.viciouslibkit.util.ChunkPos;
+import com.vicious.viciouslibkit.util.vector.ChunkPos;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;

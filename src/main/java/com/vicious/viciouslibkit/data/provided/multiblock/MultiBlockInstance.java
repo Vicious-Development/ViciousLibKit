@@ -9,7 +9,7 @@ import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.services.multiblock.MultiBlockBoundingBox;
 import com.vicious.viciouslibkit.services.multiblock.MultiBlockService;
 import com.vicious.viciouslibkit.services.multiblock.MultiBlockState;
-import com.vicious.viciouslibkit.util.ChunkPos;
+import com.vicious.viciouslibkit.util.vector.ChunkPos;
 import com.vicious.viciouslibkit.util.LibKitUtil;
 import com.vicious.viciouslibkit.util.WorldUtil;
 import org.bukkit.Location;

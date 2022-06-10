@@ -8,7 +8,7 @@ import com.vicious.viciouslibkit.interfaces.IChunkDataHandler;
 import com.vicious.viciouslibkit.interfaces.IWorldDataHandler;
 import com.vicious.viciouslibkit.services.multiblock.MultiBlockService;
 import com.vicious.viciouslibkit.services.multiblock.MultiBlockState;
-import com.vicious.viciouslibkit.util.ChunkPos;
+import com.vicious.viciouslibkit.util.vector.ChunkPos;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
