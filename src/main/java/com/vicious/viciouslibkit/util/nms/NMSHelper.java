@@ -1,7 +1,9 @@
 package com.vicious.viciouslibkit.util.nms;
 
 import com.google.common.collect.Lists;
+import com.vicious.viciouslib.util.reflect.Reflection;
 import com.vicious.viciouslib.util.reflect.deep.DeepReflection;
+import com.vicious.viciouslib.util.reflect.deep.FieldSearchContext;
 import com.vicious.viciouslib.util.reflect.deep.MethodSearchContext;
 import com.vicious.viciouslib.util.reflect.deep.TotalFailureException;
 import com.vicious.viciouslib.util.reflect.wrapper.ReflectiveField;
@@ -51,6 +53,7 @@ public class NMSHelper {
     public static ReflectiveField CraftWorld$world = new ReflectiveField("world");
     public static ReflectiveField CraftItemStack$handle = new ReflectiveField("handle");
     public static ReflectiveField CraftBlockEntity$tileEntity = new ReflectiveField("tileEntity");
+    public static ReflectiveField BlockPiston$isSticky;
 
     static {
         try {
@@ -67,7 +70,8 @@ public class NMSHelper {
             CraftBlockEntity$refreshSnapshot = DeepReflection.getMethod(CraftBlockEntityState,new MethodSearchContext().name("refreshSnapshot"));
             TileEntityComparator$setOutputSignal = DeepReflection.getMethod(TileEntityComparator,new MethodSearchContext().accepts(int.class).returns(void.class).exceptions());
             BlockPiston$checkIfExtend = DeepReflection.getMethod(NMSHelper.BlockPiston, new MethodSearchContext().accepts(NMSHelper.World,NMSHelper.BlockPosition,NMSHelper.IBlockData));
-
+            BlockPiston$isSticky = DeepReflection.getField(BlockPiston,new FieldSearchContext().type(boolean.class).withAccess(Lists.newArrayList(Modifier::isFinal, Modifier::isPrivate)));
+            System.out.println(Reflection.classManifest(BlockPiston$isSticky.getReflectiveTarget(BlockPiston).getClass(),true));
         } catch (TotalFailureException e) {
             ViciousLibKit.LOGGER.severe(e.getMessage());
             e.printStackTrace();
@@ -86,6 +90,10 @@ public class NMSHelper {
         Object nmsworld = NMSHelper.CraftWorld$world.get(world);
         Object nmsblockposition = NMSHelper.CraftBlock$getPosition.invoke(pistonBase);
         BlockPiston$checkIfExtend.invoke(nmsblock,nmsworld, nmsblockposition, nmsblockdata);
+    }
+    public static void convertSticky(Block pistonBase){
+        Object nmsblockdata = NMSHelper.CraftBlock$getNMS.invoke(pistonBase);
+        BlockPiston$isSticky.set(nmsblockdata,true);
     }
 
     public static <T> T forAllFields(Class<?> target, Function<Field,T> func) throws TotalFailureException {

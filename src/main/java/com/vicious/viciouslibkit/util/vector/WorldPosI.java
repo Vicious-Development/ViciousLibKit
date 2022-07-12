@@ -2,6 +2,7 @@ package com.vicious.viciouslibkit.util.vector;
 
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.util.Vector;
 
 import java.util.Objects;
 
@@ -46,5 +47,9 @@ public class WorldPosI {
 
     public Block getBlock() {
         return world.getBlockAt(x,y,z);
+    }
+
+    public WorldPosI translate(Vector vec) {
+        return new WorldPosI(world,x+vec.getBlockX(),y+vec.getBlockY(),z+vec.getBlockZ());
     }
 }
