@@ -4,6 +4,7 @@ import com.vicious.viciouslib.util.reflect.deep.DeepReflection;
 import com.vicious.viciouslibkit.data.worldstorage.PluginChunkData;
 import com.vicious.viciouslibkit.event.BlockEvents;
 import com.vicious.viciouslibkit.event.ChunkEvents;
+import com.vicious.viciouslibkit.event.WorldEvents;
 import com.vicious.viciouslibkit.event.piston.PistonWatcher;
 import com.vicious.viciouslibkit.inventory.wrapper.InventoryEvents;
 import com.vicious.viciouslibkit.inventory.wrapper.InventoryWrapperChunkHandler;
@@ -39,6 +40,7 @@ public final class ViciousLibKit extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BlockEvents(), this);
         getServer().getPluginManager().registerEvents(new InventoryEvents(), this);
         getServer().getPluginManager().registerEvents(new PistonWatcher(), this);
+        getServer().getPluginManager().registerEvents(new WorldEvents(), this);
         PluginChunkData.registerDataType(InventoryWrapperChunkHandler.class, InventoryWrapperChunkHandler::new);
     }
 

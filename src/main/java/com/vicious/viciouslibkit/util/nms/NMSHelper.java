@@ -1,7 +1,6 @@
 package com.vicious.viciouslibkit.util.nms;
 
 import com.google.common.collect.Lists;
-import com.vicious.viciouslib.util.reflect.Reflection;
 import com.vicious.viciouslib.util.reflect.deep.DeepReflection;
 import com.vicious.viciouslib.util.reflect.deep.FieldSearchContext;
 import com.vicious.viciouslib.util.reflect.deep.MethodSearchContext;
@@ -71,7 +70,6 @@ public class NMSHelper {
             TileEntityComparator$setOutputSignal = DeepReflection.getMethod(TileEntityComparator,new MethodSearchContext().accepts(int.class).returns(void.class).exceptions());
             BlockPiston$checkIfExtend = DeepReflection.getMethod(NMSHelper.BlockPiston, new MethodSearchContext().accepts(NMSHelper.World,NMSHelper.BlockPosition,NMSHelper.IBlockData));
             BlockPiston$isSticky = DeepReflection.getField(BlockPiston,new FieldSearchContext().type(boolean.class).withAccess(Lists.newArrayList(Modifier::isFinal, Modifier::isPrivate)));
-            System.out.println(Reflection.classManifest(BlockPiston$isSticky.getReflectiveTarget(BlockPiston).getClass(),true));
         } catch (TotalFailureException e) {
             ViciousLibKit.LOGGER.severe(e.getMessage());
             e.printStackTrace();

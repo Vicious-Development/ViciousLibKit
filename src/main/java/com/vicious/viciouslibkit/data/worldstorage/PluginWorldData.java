@@ -26,8 +26,7 @@ public class PluginWorldData {
     private static final Map<Class<? extends IWorldDataHandler>,Supplier<IWorldDataHandler>> registeredDataClasses = new HashMap<>();
     private static final Map<UUID,PluginWorldData> map = new HashMap<>();
     public static PluginWorldData getWorldData(World w){
-        ensureExists(w);
-        return map.get(w.getUID());
+        return getWorldData(w.getUID());
     }
     public static PluginWorldData getWorldData(UUID id){
         ensureExists(id);
@@ -112,6 +111,7 @@ public class PluginWorldData {
     public PluginWorldData(UUID worldid){
         WORLDID=worldid;
         map.put(worldid,this);
+        registeredDataClasses.forEach((c,d)-> dataHandlers.put(c,d.get()));
     }
 
     public void initChunk(Chunk c){
@@ -137,5 +137,18 @@ public class PluginWorldData {
     }
     public IWorldDataHandler getWorldDataHandler(Class<? extends IWorldDataHandler> cls){
         return dataHandlers.get(cls);
+    }
+
+    public void save(World w) {
+        for (IWorldDataHandler value : dataHandlers.values()) {
+            value.save(w);
+        }
+    }
+
+    public void load(World w)
+    {
+        for (IWorldDataHandler value : dataHandlers.values()) {
+            value.load(w);
+        }
     }
 }

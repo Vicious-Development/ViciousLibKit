@@ -1,6 +1,8 @@
 name: ViciousLibKit
-version: @version@
+version: '${version}'
 main: com.vicious.viciouslibkit.ViciousLibKit
-api-version: 1.18
+prefix: VLK
+load: STARTUP
+api-version: 1.19
 authors: [ Drathonix ]
 description: An Implementation of ViciousLib in bukkit plugin form with some extra utility code for developers.
