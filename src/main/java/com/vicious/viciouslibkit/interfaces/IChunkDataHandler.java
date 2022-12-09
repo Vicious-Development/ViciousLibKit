@@ -9,7 +9,7 @@ import org.bukkit.block.Block;
 import java.io.File;
 import java.nio.file.Path;
 
-public interface IChunkDataHandler {
+public interface IChunkDataHandler extends IDataHandler{
     void load(Chunk c);
     void unload(Chunk c);
     void save(Chunk c);
@@ -22,6 +22,4 @@ public interface IChunkDataHandler {
         if(!dir.exists()) return new File[0];
         return dir.listFiles();
     }
-
-    String getDataID();
 }

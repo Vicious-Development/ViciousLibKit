@@ -5,8 +5,6 @@ plugins {
 }
 
 group = "com.vicious"
-String projectver = "1.4.6"
-String mcver = "1.19"
 version = "${mcver}-${projectver}"
 
 sourceCompatibility = '1.8'
@@ -23,7 +21,8 @@ repositories {
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
     maven {
-        url = uri("https://maven.pkg.github.com/Vicious-MCModding/ViciousLib")
+        name = "ViciousLib"
+        url = uri("https://maven.pkg.${viciousorglink}/ViciousLib")
         credentials {
             username = project.findProperty("gpr.user") ?: System.getenv("GPR_USER")
             password = project.findProperty("gpr.key") ?: System.getenv("GPR_API_KEY")
@@ -32,8 +31,7 @@ repositories {
 }
 
 dependencies {
-    compile "com.vicious:viciouslib:2.0.8";
-    compile "org.json:json:20211205"
+    implementation "com.vicious:viciouslib:${vlver}"
     compileOnly "org.spigotmc:spigot-api:${mcver}-R0.1-SNAPSHOT"
 }
 

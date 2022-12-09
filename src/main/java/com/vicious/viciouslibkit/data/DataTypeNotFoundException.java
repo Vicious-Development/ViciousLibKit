@@ -1,6 +1,6 @@
 package com.vicious.viciouslibkit.data;
 
-public class DataTypeNotFoundException extends Exception {
+public class DataTypeNotFoundException extends RuntimeException {
     public DataTypeNotFoundException(){
         super();
     }

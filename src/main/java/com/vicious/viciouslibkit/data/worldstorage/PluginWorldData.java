@@ -1,6 +1,7 @@
 package com.vicious.viciouslibkit.data.worldstorage;
 
 import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
+import com.vicious.viciouslib.util.ClassMap;
 import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockChunkDataHandler;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockInstance;
@@ -19,12 +20,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
-public class PluginWorldData {
-    //Global
-    private static final Map<Class<? extends IWorldDataHandler>,Supplier<IWorldDataHandler>> registeredDataClasses = new HashMap<>();
+public class PluginWorldData implements PluginDataStorage<IWorldDataHandler>{
     private static final Map<UUID,PluginWorldData> map = new HashMap<>();
+    //Global
     public static PluginWorldData getWorldData(World w){
         return getWorldData(w.getUID());
     }
@@ -42,13 +41,13 @@ public class PluginWorldData {
         return getWorldData(w).getChunkData(c);
     }
     public static <T extends IChunkDataHandler> T getChunkDataHandler(World w, ChunkPos c, Class<T> handlerClass){
-        return getWorldData(w).getChunkData(c).getDataHandlerExceptionless(handlerClass);
+        return getWorldData(w).getChunkData(c).getDataHandler(handlerClass);
     }
     public static void ensureExists(World w){
-        if(!map.containsKey(w.getUID())) map.put(w.getUID(),new PluginWorldData(w.getUID()));
+        if(!map.containsKey(w.getUID())) map.put(w.getUID(),new PluginWorldData());
     }
     public static void ensureExists(UUID id){
-        if(!map.containsKey(id)) map.put(id,new PluginWorldData(id));
+        if(!map.containsKey(id)) map.put(id,new PluginWorldData());
     }
 
     public static void loadChunk(Chunk chunk) {
@@ -75,7 +74,7 @@ public class PluginWorldData {
         ChunkPos cpos = ChunkPos.fromBlockPos(v);
         PluginWorldData wdat = getWorldData(w.getUID());
         PluginChunkData cdat = wdat.getChunkData(cpos);
-        MultiBlockChunkDataHandler dh = cdat.getDataHandlerExceptionless(MultiBlockChunkDataHandler.class);
+        MultiBlockChunkDataHandler dh = cdat.getDataHandler(MultiBlockChunkDataHandler.class);
         if(dh.checkExists(v)) return new MultiBlockState(MultiBlockState.State.VALID," Already exists.",0);
         MultiBlockState isValid = MultiBlockInstance.checkValid(w,l,cls);
         if(!isValid.isValid()) return isValid;
@@ -100,18 +99,13 @@ public class PluginWorldData {
     public static void scheduleChunkLoadProcess(Consumer<Chunk> process, ChunkPos pos, World w){
         getChunkData(w,pos).scheduleProcessForLoad(process);
     }
-    public static void registerWorldDataType(Class<? extends IWorldDataHandler> cls, Supplier<IWorldDataHandler> dataHandlerSupplier){
-        registeredDataClasses.put(cls,dataHandlerSupplier);
-    }
 
     //Instance
     public Map<ChunkPos,PluginChunkData> chunkMap = new HashMap<>();
-    private final Map<Class<? extends IWorldDataHandler>, IWorldDataHandler> dataHandlers = new HashMap<>();
-    public final UUID WORLDID;
-    public PluginWorldData(UUID worldid){
-        WORLDID=worldid;
-        map.put(worldid,this);
-        registeredDataClasses.forEach((c,d)-> dataHandlers.put(c,d.get()));
+    private final ClassMap<IWorldDataHandler> dataHandlers = new ClassMap<>();
+    public UUID WORLDID;
+    public PluginWorldData(){
+        initialize();
     }
 
     public void initChunk(Chunk c){
@@ -147,8 +141,14 @@ public class PluginWorldData {
 
     public void load(World w)
     {
+        this.WORLDID=w.getUID();
         for (IWorldDataHandler value : dataHandlers.values()) {
             value.load(w);
         }
+    }
+
+    @Override
+    public ClassMap<IWorldDataHandler> getHandlerMap() {
+        return dataHandlers;
     }
 }

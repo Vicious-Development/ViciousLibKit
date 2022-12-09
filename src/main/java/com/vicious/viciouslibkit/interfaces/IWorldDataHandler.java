@@ -8,7 +8,7 @@ import org.bukkit.block.Block;
 import java.io.File;
 import java.nio.file.Path;
 
-public interface IWorldDataHandler {
+public interface IWorldDataHandler extends IDataHandler{
     void load(World w);
     void unload(World w);
     void save(World w);
@@ -20,6 +20,4 @@ public interface IWorldDataHandler {
         if(!dir.exists()) return new File[0];
         return dir.listFiles();
     }
-
-    String getDataID();
 }

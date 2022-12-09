@@ -2,10 +2,11 @@ package com.vicious.viciouslibkit.data;
 
 import com.vicious.viciouslib.util.FileUtil;
 import com.vicious.viciouslibkit.data.worldstorage.PluginChunkData;
-import com.vicious.viciouslibkit.util.vector.ChunkPos;
 import com.vicious.viciouslibkit.util.LibKitDirectories;
+import com.vicious.viciouslibkit.util.vector.ChunkPos;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -55,4 +56,11 @@ public class WorldDataDirectory {
         return FileUtil.createDirectoryIfDNE(getWorldViciousDir(w).toAbsolutePath().toString() + "/" + dataID);
     }
 
+    public static Path getDirForEntities(){
+        return FileUtil.createDirectoryIfDNE(LibKitDirectories.worldPersistentDataDir + "/entities");
+    }
+
+    public static Path getDirForEntity(Entity e){
+        return FileUtil.createDirectoryIfDNE(getDirForEntities().toAbsolutePath().toString() + "/" + e.getUniqueId());
+    }
 }
