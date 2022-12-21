@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.PlayerInventory;
 
 import java.util.HashMap;
 import java.util.IdentityHashMap;
@@ -20,13 +21,18 @@ public class CustomGUIInventory {
         for (InventoryAction value : InventoryAction.values()) {
             InventoryEvents.registerInventoryClickListener(value,(e)->{
                 CustomGUIInventory gui = active.get(e.getClickedInventory());
-                if(gui != null) {
+                CustomGUIInventory guiOther = active.get(e.getInventory());
+                if(guiOther != null && e.getClickedInventory() instanceof PlayerInventory pi) {
+                    if(e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY){
+                        e.setCancelled(true);
+                    }
+                }
+                if (gui != null) {
                     if (e.isLeftClick()) {
                         gui.onLeftClick(e);
                     } else if (e.isRightClick()) {
                         gui.onRightClick(e);
-                    }
-                    else e.setCancelled(true);
+                    } else e.setCancelled(true);
                 }
             });
         }

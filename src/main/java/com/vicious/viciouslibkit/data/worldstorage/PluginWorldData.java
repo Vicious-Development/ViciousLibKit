@@ -15,6 +15,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,7 +107,7 @@ public class PluginWorldData implements PluginDataStorage<IWorldDataHandler>{
     private final ClassMap<IWorldDataHandler> dataHandlers = new ClassMap<>();
     public UUID WORLDID;
     public PluginWorldData(){
-        initialize();
+        initialize(getClass());
     }
 
     public void initChunk(Chunk c){
@@ -145,6 +147,11 @@ public class PluginWorldData implements PluginDataStorage<IWorldDataHandler>{
         for (IWorldDataHandler value : dataHandlers.values()) {
             value.load(w);
         }
+    }
+
+    @Override
+    public Path getSpecificDirectory() {
+        return Paths.get("DONOTUSE");
     }
 
     @Override

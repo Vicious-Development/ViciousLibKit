@@ -1,6 +1,6 @@
 package com.vicious.viciouslibkit.util;
 
-import com.vicious.viciouslib.util.TriConsumer;
+import com.vicious.viciouslib.util.interfaces.TriConsumer;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;

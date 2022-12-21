@@ -7,6 +7,8 @@ import com.vicious.viciouslibkit.interfaces.IChunkDataHandler;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -16,7 +18,7 @@ public class PluginChunkData implements PluginDataStorage<IChunkDataHandler>{
     private final List<Consumer<Chunk>> scheduled = new ArrayList<>();
     private Chunk chunk;
     public PluginChunkData(){
-        initialize();
+        initialize(getClass());
     }
     @SuppressWarnings("unchecked")
     public <T extends IChunkDataHandler> T getDataHandler(Class<T> cls) throws DataTypeNotFoundException {
@@ -73,6 +75,11 @@ public class PluginChunkData implements PluginDataStorage<IChunkDataHandler>{
     }
     public Chunk getChunk(){
         return chunk;
+    }
+
+    @Override
+    public Path getSpecificDirectory() {
+        return Paths.get("DONOTUSE");
     }
 
     @Override

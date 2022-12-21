@@ -6,6 +6,7 @@ import com.vicious.viciouslibkit.data.provided.netnode.NetChunkDataHandler;
 import com.vicious.viciouslibkit.data.worldstorage.*;
 import com.vicious.viciouslibkit.event.BlockEvents;
 import com.vicious.viciouslibkit.event.ChunkEvents;
+import com.vicious.viciouslibkit.event.PlayerEvents;
 import com.vicious.viciouslibkit.event.WorldEvents;
 import com.vicious.viciouslibkit.event.piston.PistonWatcher;
 import com.vicious.viciouslibkit.interfaces.IChunkDataHandler;
@@ -42,7 +43,7 @@ public final class ViciousLibKit extends JavaPlugin {
 
         PluginDataStorage.registerPluginDataType(PluginWorldData.class,PluginWorldData::new);
         DataStorageRegistryObject<PluginChunkData, IChunkDataHandler> chunkDataStorage = PluginDataStorage.registerPluginDataType(PluginChunkData.class,PluginChunkData::new);
-        PluginDataStorage.registerPluginDataType(PluginEntityData.class,PluginEntityData::new);
+        PluginDataStorage.registerPluginDataType(PluginPlayerData.class,PluginPlayerData::new);
 
         chunkDataStorage.registerDataType(InventoryWrapperChunkHandler.class, InventoryWrapperChunkHandler::new);
         chunkDataStorage.registerDataType(MultiBlockChunkDataHandler.class,MultiBlockChunkDataHandler::new);
@@ -53,6 +54,8 @@ public final class ViciousLibKit extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InventoryEvents(), this);
         getServer().getPluginManager().registerEvents(new PistonWatcher(), this);
         getServer().getPluginManager().registerEvents(new WorldEvents(), this);
+        getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
+
     }
 
     @Override

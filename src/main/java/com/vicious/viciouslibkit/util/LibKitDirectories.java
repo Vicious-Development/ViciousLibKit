@@ -14,6 +14,7 @@ public class LibKitDirectories {
     public static Path pluginsDirectory;
     public static Path pluginConfigDirectory;
     public static Path libKitConfigPath;
+    public static Path recipesPath;
     public static Path overworldPath;
     public static String overworldName;
     //This path is wiped on a server reset.
@@ -34,7 +35,8 @@ public class LibKitDirectories {
     public static void initializePluginDependents(){
         pluginsDirectory = FileUtil.createDirectoryIfDNE(rootDir() + "/plugins");
         pluginConfigDirectory = FileUtil.createDirectoryIfDNE(pluginsDirectory.toAbsolutePath() + "/config");
-        libKitConfigPath = Paths.get(pluginConfigDirectory.toAbsolutePath() + "/dubiousConfigPath.json");
+        libKitConfigPath = Paths.get(pluginConfigDirectory.toAbsolutePath() + "/vicious");
+        recipesPath = Paths.get(libKitConfigPath.toAbsolutePath() + "/recipes.json");
         overworldName = serverProperties.getProperty("level-name");
         overworldPath = FileUtil.createDirectoryIfDNE(rootDir() + "/" + overworldName);
         worldPersistentDataDir = FileUtil.createDirectoryIfDNE(overworldPath + "/" + "vicious");

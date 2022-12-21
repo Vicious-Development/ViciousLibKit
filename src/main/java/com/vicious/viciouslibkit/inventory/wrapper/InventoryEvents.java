@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-public class InventoryEvents implements Listener {
+public class  InventoryEvents implements Listener {
     private static Map<InventoryAction,List<Consumer<InventoryClickEvent>>> clickEventHandlers = new EnumMap<>(InventoryAction.class);
     @EventHandler(priority = EventPriority.LOWEST)
     public void onMove(InventoryMoveItemEvent ev){

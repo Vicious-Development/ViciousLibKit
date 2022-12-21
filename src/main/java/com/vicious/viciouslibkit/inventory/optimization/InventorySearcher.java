@@ -13,8 +13,6 @@ import java.util.function.Predicate;
 
 /**
  * An optimized inventory searching system that saves the last slot of a found material and checks that first before scanning the entire inventory again.
- *
- * TODO MOVE TO VLK
  */
 public class InventorySearcher {
     private IdentityHashMap<Predicate<ItemStack>,Integer> lastSlotMap = new IdentityHashMap<>();
