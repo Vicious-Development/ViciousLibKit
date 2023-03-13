@@ -6,6 +6,7 @@ import com.vicious.viciouslibkit.interfaces.IDataHandler;
 import com.vicious.viciouslibkit.util.LibKitDirectories;
 
 import java.nio.file.Path;
+import java.util.Locale;
 import java.util.function.Supplier;
 
 public interface PluginDataStorage<V extends IDataHandler> {
@@ -25,7 +26,7 @@ public interface PluginDataStorage<V extends IDataHandler> {
     }
 
     default Path getDataDirectory(){
-        return FileUtil.createDirectoryIfDNE(LibKitDirectories.worldPersistentDataDir.toAbsolutePath() + "/" + getClass().getSimpleName());
+        return FileUtil.createDirectoryIfDNE(LibKitDirectories.worldPersistentDataDir.toAbsolutePath() + "/" + getClass().getSimpleName().toLowerCase(Locale.ROOT));
     }
 
     Path getSpecificDirectory();

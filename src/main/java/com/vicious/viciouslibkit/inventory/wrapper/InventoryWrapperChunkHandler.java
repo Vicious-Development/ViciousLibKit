@@ -1,6 +1,7 @@
 package com.vicious.viciouslibkit.inventory.wrapper;
 
 import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
+import com.vicious.viciouslibkit.ViciousLibKit;
 import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.interfaces.IChunkDataHandler;
 import com.vicious.viciouslibkit.util.LibKitUtil;
@@ -9,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Container;
+import org.bukkit.plugin.Plugin;
 
 public class InventoryWrapperChunkHandler implements IChunkDataHandler {
     private static final String DATAID = "InventoryWrapper";
@@ -60,6 +62,11 @@ public class InventoryWrapperChunkHandler implements IChunkDataHandler {
 
     @Override
     public void handleBlockChange(BlockInstance blockInstance, Block block) {
+    }
+
+    @Override
+    public Plugin getPlugin() {
+        return ViciousLibKit.INSTANCE;
     }
 
     @Override

@@ -29,6 +29,7 @@ repositories {
 
 dependencies {
     implementation "com.vicious:viciouslib:${vlver}"
+    implementation 'org.json:json:20220320'
     compileOnly "org.spigotmc:spigot-api:${mcver}-R0.1-SNAPSHOT"
 }
 

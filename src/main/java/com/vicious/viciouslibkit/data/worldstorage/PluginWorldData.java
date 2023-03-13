@@ -2,6 +2,7 @@ package com.vicious.viciouslibkit.data.worldstorage;
 
 import com.vicious.viciouslib.database.objectTypes.SQLVector3i;
 import com.vicious.viciouslib.util.ClassMap;
+import com.vicious.viciouslib.util.FileUtil;
 import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockChunkDataHandler;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockInstance;
@@ -9,6 +10,7 @@ import com.vicious.viciouslibkit.interfaces.IChunkDataHandler;
 import com.vicious.viciouslibkit.interfaces.IWorldDataHandler;
 import com.vicious.viciouslibkit.services.multiblock.MultiBlockService;
 import com.vicious.viciouslibkit.services.multiblock.MultiBlockState;
+import com.vicious.viciouslibkit.util.LibKitDirectories;
 import com.vicious.viciouslibkit.util.vector.ChunkPos;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -16,7 +18,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,7 +152,7 @@ public class PluginWorldData implements PluginDataStorage<IWorldDataHandler>{
 
     @Override
     public Path getSpecificDirectory() {
-        return Paths.get("DONOTUSE");
+        return FileUtil.createDirectoryIfDNE(LibKitDirectories.worldPersistentDataDir.toAbsolutePath().toString() + "/" + WORLDID);
     }
 
     @Override

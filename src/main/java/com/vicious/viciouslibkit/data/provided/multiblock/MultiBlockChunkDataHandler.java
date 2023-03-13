@@ -16,6 +16,7 @@ import com.vicious.viciouslibkit.util.map.PositionMap;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import java.io.File;
@@ -30,7 +31,6 @@ public class MultiBlockChunkDataHandler implements IChunkDataHandler {
     private final List<MultiBlockBoundingBox> boxesToRemove = new ArrayList<>();
     private final PositionMap<MultiBlockInstance> multiblocks = new PositionMap<>();
     private final List<MultiBlockBoundingBox> boundingBoxes = new ArrayList<>();
-    public static final String DATAID = "multiblock";
     @Override
     public void load(Chunk c) {
         ChunkPos cpos = new ChunkPos(c.getX(),c.getZ());
@@ -83,11 +83,6 @@ public class MultiBlockChunkDataHandler implements IChunkDataHandler {
     @Override
     public void handleBlockChange(BlockInstance bi, Block b) {
         checkBlockUpdate(bi,b);
-    }
-
-    @Override
-    public String getDataID() {
-        return DATAID;
     }
 
     public void addMultiblock(MultiBlockInstance mbi){
@@ -183,5 +178,10 @@ public class MultiBlockChunkDataHandler implements IChunkDataHandler {
     }
     private void removeBox(MultiBlockBoundingBox box) {
         boxesToRemove.add(box);
+    }
+
+    @Override
+    public Plugin getPlugin() {
+        return ViciousLibKit.INSTANCE;
     }
 }

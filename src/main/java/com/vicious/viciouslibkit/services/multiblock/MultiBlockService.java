@@ -4,11 +4,10 @@ import com.vicious.viciouslib.util.FileUtil;
 import com.vicious.viciouslibkit.block.BlockTemplate;
 import com.vicious.viciouslibkit.block.blockinstance.BlockInstance;
 import com.vicious.viciouslibkit.data.WorldDataDirectory;
-import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockChunkDataHandler;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockInstance;
 import com.vicious.viciouslibkit.data.worldstorage.PluginWorldData;
-import com.vicious.viciouslibkit.util.vector.ChunkPos;
 import com.vicious.viciouslibkit.util.map.BiMap;
+import com.vicious.viciouslibkit.util.vector.ChunkPos;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -18,6 +17,8 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class MultiBlockService {
+    public static final String DATAID = "multiblock";
+
     public static BiMap<String,Class<? extends MultiBlockInstance>> idMap = new BiMap<>();
     public static Map<Class<? extends MultiBlockInstance>,MBConstructor<?>> registry = new HashMap<>();
     public static Map<Class<? extends MultiBlockInstance>,MBReconstructor<?>> reconstructors = new HashMap<>();
@@ -42,10 +43,10 @@ public class MultiBlockService {
 
     }
     public static Path getMBPath(World w, Location l, Class<? extends MultiBlockInstance> mbic, UUID id) {
-        return FileUtil.toPath(WorldDataDirectory.getChunkDirForData(w,ChunkPos.fromBlockPos(l), MultiBlockChunkDataHandler.DATAID).toAbsolutePath() + "/" + idMap.getK(mbic) + "_" + id + ".json");
+        return FileUtil.toPath(WorldDataDirectory.getChunkDirForData(w,ChunkPos.fromBlockPos(l), DATAID).toAbsolutePath() + "/" + idMap.getK(mbic) + "_" + id + ".json");
     }
     public static Path getMBPath(World w, ChunkPos c, Class<? extends MultiBlockInstance> mbic, UUID id) {
-        return FileUtil.toPath(WorldDataDirectory.getChunkDirForData(w,c, MultiBlockChunkDataHandler.DATAID).toAbsolutePath() + "/" + idMap.getK(mbic) + "_" + id + ".json");
+        return FileUtil.toPath(WorldDataDirectory.getChunkDirForData(w,c, DATAID).toAbsolutePath() + "/" + idMap.getK(mbic) + "_" + id + ".json");
     }
 }
 

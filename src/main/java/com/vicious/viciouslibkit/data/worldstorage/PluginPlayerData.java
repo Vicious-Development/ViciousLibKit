@@ -4,33 +4,58 @@ import com.vicious.viciouslib.util.ClassMap;
 import com.vicious.viciouslib.util.FileUtil;
 import com.vicious.viciouslibkit.data.DataTypeNotFoundException;
 import com.vicious.viciouslibkit.interfaces.IPlayerDataHandler;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 public class PluginPlayerData implements PluginDataStorage<IPlayerDataHandler> {
     private static final Map<UUID, PluginPlayerData> dataMap = new HashMap<>();
 
     private final ClassMap<IPlayerDataHandler> handlers = new ClassMap<>();
-    private Player player;
+    private UUID uuid;
 
     public PluginPlayerData() {
         initialize(getClass());
+    }
+
+    public PluginPlayerData(OfflinePlayer entity) {
+        this.uuid=entity.getUniqueId();
     }
 
     public static void loadPlayer(Player entity) {
         getPlayerData(entity).load(entity);
     }
 
+    public static PluginPlayerData getPlayerUnloadedData(OfflinePlayer entity) {
+        if(entity instanceof Player p){
+            return getPlayerData(p);
+        }
+        return new PluginPlayerData(entity);
+    }
+
     public static PluginPlayerData getPlayerData(Player p) {
         return dataMap.computeIfAbsent(p.getUniqueId(), u -> new PluginPlayerData());
     }
 
+    public static <T extends IPlayerDataHandler> T getHandler(Player p, Class<T> cls){
+        return getPlayerData(p).getDataHandler(cls);
+    }
+    @SuppressWarnings("unchecked")
+    public static <T extends IPlayerDataHandler> T getHandler(OfflinePlayer p, Class<T> cls){
+        if(p instanceof Player op){
+            return getHandler(op,cls);
+        }
+        Supplier<T> supplier = (Supplier<T>) PluginDataStorage.getPluginDataRegistry(PluginPlayerData.class).dataHandlerFactories.get(cls);
+        return supplier.get();
+    }
+
     public static void unloadEntity(Player p) {
-        getPlayerData(p).load(p);
+        getPlayerData(p).unload(p);
     }
 
     @SuppressWarnings("unchecked")
@@ -57,7 +82,7 @@ public class PluginPlayerData implements PluginDataStorage<IPlayerDataHandler> {
     }
 
     public void load(Player p) {
-        player = p;
+        uuid = p.getUniqueId();
         handlers.forEach((cls, h) -> {
             h.load(p);
         });
@@ -72,7 +97,7 @@ public class PluginPlayerData implements PluginDataStorage<IPlayerDataHandler> {
 
     @Override
     public Path getSpecificDirectory() {
-        return FileUtil.createDirectoryIfDNE(getDataDirectory() + "/" + player.getUniqueId());
+        return FileUtil.createDirectoryIfDNE(getDataDirectory() + "/" + uuid);
     }
 
     @Override
