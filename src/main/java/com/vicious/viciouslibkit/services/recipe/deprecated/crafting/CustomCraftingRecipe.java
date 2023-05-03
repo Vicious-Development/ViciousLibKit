@@ -1,4 +1,4 @@
-package com.vicious.viciouslibkit.services.recipe.crafting;
+package com.vicious.viciouslibkit.services.recipe.deprecated.crafting;
 
 import com.vicious.viciouslibkit.item.ICustomItem;
 import org.bukkit.Bukkit;

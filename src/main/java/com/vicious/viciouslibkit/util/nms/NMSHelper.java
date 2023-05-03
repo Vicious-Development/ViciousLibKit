@@ -54,7 +54,7 @@ public class NMSHelper {
     public static ReflectiveField CraftBlockEntity$tileEntity = new ReflectiveField("tileEntity");
     public static ReflectiveField BlockPiston$isSticky;
 
-    static {
+    public static void init() {
         try {
             MethodSearchContext ctx = new MethodSearchContext().accepts().returns(Block);
             IBlockData$getBlock = DeepReflection.getMethod(IBlockData,ctx);

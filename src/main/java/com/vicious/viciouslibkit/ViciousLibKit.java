@@ -1,6 +1,7 @@
 package com.vicious.viciouslibkit;
 
 import com.vicious.viciouslib.util.FileUtil;
+import com.vicious.viciouslib.util.reflect.deep.DeepReflection;
 import com.vicious.viciouslibkit.data.provided.multiblock.MultiBlockChunkDataHandler;
 import com.vicious.viciouslibkit.data.worldstorage.*;
 import com.vicious.viciouslibkit.event.BlockEvents;
@@ -12,6 +13,7 @@ import com.vicious.viciouslibkit.interfaces.IChunkDataHandler;
 import com.vicious.viciouslibkit.inventory.wrapper.InventoryEvents;
 import com.vicious.viciouslibkit.inventory.wrapper.InventoryWrapperChunkHandler;
 import com.vicious.viciouslibkit.util.LibKitDirectories;
+import com.vicious.viciouslibkit.util.nms.NMSHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -39,8 +41,8 @@ public final class ViciousLibKit extends JavaPlugin implements Listener {
         LOGGER=getLogger();
         try {
             jarURL = classLoader.getResources("net/minecraft");
-            //DeepReflection.mapClasses(jarURL, classLoader);
-            //new NMSHelper();
+            DeepReflection.mapClasses(jarURL, classLoader,true);
+            NMSHelper.init();
         } catch (Exception e) {
             LOGGER.severe("Failed to initialize the NMSHelper.");
             //e.printStackTrace();
@@ -61,7 +63,6 @@ public final class ViciousLibKit extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new WorldEvents(), this);
         getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
         Bukkit.getPluginManager().registerEvents(this,this);
-
     }
 
     @Override
